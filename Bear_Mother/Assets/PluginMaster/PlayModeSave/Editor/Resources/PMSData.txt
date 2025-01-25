@@ -1,1 +1,1 @@
-{"_rootDirectory":"C:\\Users\\msi\\Desktop\\Unity_Main\\GJS\\Assets","_alwaysSave":[],"_alwaysSaveFull":[{"_objId":14138,"_globalObjId":"GlobalObjectId_V1-2-9d83ab95ae45ea24997b11bab3666116-6817085-0","_scenePath":"Assets/Scenes/lobby.unity","_siblingPath":[2],"_rootName":"Main Camera","_objName":"Main Camera","_parentKeys":[]}]}
+{"_rootDirectory":"C:\\Users\\msi\\Desktop\\Unity_Main\\Bear_Mother\\Bear_Mother\\Assets","_alwaysSave":[],"_alwaysSaveFull":[]}
