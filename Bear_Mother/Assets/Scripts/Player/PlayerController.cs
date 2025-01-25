@@ -17,6 +17,8 @@ public class PlayerController : MonoBehaviour
     // Modules
     private Move move;
     private Jump jump;
+    private Claw claw;
+    private Hand hand;
 
     // =================================================================================================================
 
@@ -24,8 +26,11 @@ public class PlayerController : MonoBehaviour
     {
         move = GetComponent<Move>();
         jump = GetComponent<Jump>();
+        claw = GetComponent<Claw>();
+        hand = GetComponent<Hand>();
 
         controls = new();
+
         moveLeftInput = controls.Player.MoveLeft;
         moveRightInput = controls.Player.MoveRight;
         jumpInput = controls.Player.Jump;
@@ -41,6 +46,8 @@ public class PlayerController : MonoBehaviour
         moveRightInput.performed += move.ActRight;
         moveRightInput.canceled += move.StopRight;
         jumpInput.performed += jump.Act;
+        actionInput1.performed += claw.Act;
+        actionInput2.performed += hand.Act;
     }
 
     private void OnDisable()
@@ -51,5 +58,7 @@ public class PlayerController : MonoBehaviour
         moveRightInput.performed -= move.ActRight;
         moveRightInput.canceled -= move.StopRight;
         jumpInput.performed -= jump.Act;
+        actionInput1.performed -= claw.Act;
+        actionInput2.performed -= hand.Act;
     }
 }
