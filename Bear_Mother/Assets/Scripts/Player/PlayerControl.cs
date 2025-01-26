@@ -8,10 +8,14 @@ public abstract class PlayerControl : MonoBehaviour
     // Physics
     protected Rigidbody2D Rb { get; private set; }
     protected Collider2D Col { get; private set; }
+    protected static bool FacingRight;
 
     // Graphics
     protected SpriteRenderer Sprite { get; private set; }
     protected Animator Animator { get; private set; }
+
+    // Logic
+    protected LevelManager LevelManager { get; private set; }
 
     // =================================================================================================================
 
@@ -22,8 +26,10 @@ public abstract class PlayerControl : MonoBehaviour
         Sprite = GetComponent<SpriteRenderer>();
         Animator = GetComponent<Animator>();
 
+        LevelManager = FindObjectOfType<LevelManager>();
+
         Init();
     }
 
-    protected void Init() { }
+    protected virtual void Init() { }
 }

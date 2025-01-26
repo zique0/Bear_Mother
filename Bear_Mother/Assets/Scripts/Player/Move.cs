@@ -21,10 +21,20 @@ public class Move : PlayerControl
 
     // =================================================================================================================
 
-    public void ActLeft(InputAction.CallbackContext context) => Act(Vector2.left);
-    public void ActRight(InputAction.CallbackContext context) => Act(Vector2.right);
-    public void StopLeft(InputAction.CallbackContext context) => Stop(Vector2.left);
-    public void StopRight(InputAction.CallbackContext context) => Stop(Vector2.right);
+    public void ActLeft(InputAction.CallbackContext _)
+    {
+        FacingRight = false;
+        Act(Vector2.left);
+    }
+
+    public void ActRight(InputAction.CallbackContext _)
+    {
+        FacingRight = true;
+        Act(Vector2.right);
+    }
+
+    public void StopLeft(InputAction.CallbackContext _) => Stop(Vector2.left);
+    public void StopRight(InputAction.CallbackContext _) => Stop(Vector2.right);
 
     // =================================================================================================================
 

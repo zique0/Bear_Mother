@@ -3,14 +3,15 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class Claw : MonoBehaviour
+public class Claw : PlayerControl
 {
     [Header("States")]
     [SerializeField] private float attackCooldownTimer;
 
     [Header("Settings")]
-    [SerializeField] private float digRadius;
+    [SerializeField] private float breakRange;
     [SerializeField] private float holdInputThreshold;
+    [SerializeField] private float breakDuration;
     [SerializeField] private float attackCooldownDuration;
 
     // Management
@@ -27,8 +28,9 @@ public class Claw : MonoBehaviour
     private IEnumerator PollAct(InputAction.CallbackContext context)
     {
         var elapsed = 0f;
+        var breakPos = NearestBreakablePos();
 
-        if (CheckDiggableBlock())
+        if (breakPos != null)
         {
             while (context.performed)
             {
@@ -36,7 +38,7 @@ public class Claw : MonoBehaviour
 
                 if (elapsed >= holdInputThreshold)
                 {
-                    TryDig();
+                    StartCoroutine(TryBreak(context, (Vector2)breakPos));
                     yield break;
                 }
 
@@ -67,18 +69,45 @@ public class Claw : MonoBehaviour
             attackCooldownTimer += Time.deltaTime;
             yield return null;
         }
+
+        attackCooldownRoutine = null;
     }
 
     // =================================================================================================================
 
-    private bool CheckDiggableBlock()
+    private Vector2? NearestBreakablePos()
     {
-       return false;
+        var hit = Physics2D.Raycast(transform.position, FacingRight ? Vector2.right : Vector2.left, breakRange,
+            LayerMask.GetMask(References.Layers.CanBreak));
+
+        if (!hit) hit = Physics2D.Raycast(transform.position, Vector2.down, breakRange,
+            LayerMask.GetMask(References.Layers.CanBreak));
+
+        if (hit) return hit.point;
+        else return null;
     }
 
-    private void TryDig()
+    private IEnumerator TryBreak(InputAction.CallbackContext context, Vector2 breakPos)
     {
-        Debug.Log("Digging");
+        var elapsed = 0f;
+
+        while (context.performed)
+        {
+            elapsed += Time.deltaTime;
+
+            if (elapsed >= breakDuration)
+            {
+                if (breakPos != null)
+                {
+                    Debug.Log(breakPos);
+                    LevelManager.CurrentLevel.DeleteTileAtWorld(breakPos);
+                }
+
+                yield break;
+            }
+
+            yield return null;
+        }
     }
 
     // =================================================================================================================
@@ -86,6 +115,8 @@ public class Claw : MonoBehaviour
     private void OnDrawGizmos()
     {
         Gizmos.color = Color.red;
-        Gizmos.DrawWireSphere(transform.position, digRadius);
+
+        Gizmos.DrawLine(transform.position, transform.position + (FacingRight ? Vector3.right : Vector3.left) * breakRange);
+        Gizmos.DrawLine(transform.position, transform.position + Vector3.down * breakRange);
     }
 }

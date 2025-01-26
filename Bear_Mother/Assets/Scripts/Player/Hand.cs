@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class Hand : MonoBehaviour
+public class Hand : PlayerControl
 {
     [Header("States")]
     [SerializeField] private Item held;

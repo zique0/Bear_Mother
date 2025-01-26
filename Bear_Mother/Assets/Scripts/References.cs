@@ -9,4 +9,9 @@ public static class References
         public const string Item = "Item";
         public const string Totem = "Totem";
     }
+
+    public static class Layers
+    {
+        public const string CanBreak = "CanBreak";
+    }
 }
