@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Tilemaps;
 
 [RequireComponent(typeof(PlayerController))]
 public abstract class PlayerControl : MonoBehaviour
@@ -15,7 +16,9 @@ public abstract class PlayerControl : MonoBehaviour
     protected Animator Animator { get; private set; }
 
     // Logic
+    protected PlayerController Controller { get; private set; }
     protected LevelManager LevelManager { get; private set; }
+    protected Tilemap World { get; private set; }
 
     // =================================================================================================================
 
@@ -26,7 +29,9 @@ public abstract class PlayerControl : MonoBehaviour
         Sprite = GetComponent<SpriteRenderer>();
         Animator = GetComponent<Animator>();
 
+        Controller = GetComponent<PlayerController>();
         LevelManager = FindObjectOfType<LevelManager>();
+        World = LevelManager.World;
 
         Init();
     }

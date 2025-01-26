@@ -6,6 +6,7 @@ public static class References
 {
     public static class Tags
     {
+        public const string LevelBound = "LevelBound";
         public const string Item = "Item";
         public const string Totem = "Totem";
     }

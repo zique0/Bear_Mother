@@ -6,6 +6,8 @@ using UnityEngine.InputSystem;
 
 public class Move : PlayerControl
 {
+    private Claw claw;
+
     [Header("States")]
     [SerializeField] private float speed;
 
@@ -20,6 +22,11 @@ public class Move : PlayerControl
     private Coroutine stopRoutine;
 
     // =================================================================================================================
+
+    protected override void Init()
+    {
+        claw = GetComponent<Claw>();
+    }
 
     public void ActLeft(InputAction.CallbackContext _)
     {
@@ -40,6 +47,8 @@ public class Move : PlayerControl
 
     public void Act(Vector2 dir)
     {
+        claw.TryUpdateBreakTargetDirection(Claw.BreakDir.FRONT);
+
         if (actRoutine != null) StopCoroutine(actRoutine);
         actRoutine = StartCoroutine(ActRoutine(dir));
     }

@@ -13,13 +13,13 @@ public class Level : MonoBehaviour
 
     // References
     [SerializeField] private Tilemap breakableTiles;
+    public Tilemap BreakableTiles => breakableTiles;
 
     // =================================================================================================================
-    public void DeleteTileAtWorld(Vector2 worldPos)
-    {
-        Debug.Log(breakableTiles.WorldToCell(worldPos));
-        Debug.Log(breakableTiles.GetTile(breakableTiles.WorldToCell(worldPos)));
 
+    /*
+    public void DestroyWorldTile(Vector2 worldPos)
+    {
         breakableTiles.SetTile(breakableTiles.WorldToCell(worldPos) + Vector3Int.down, null);
-    }
+    } */
 } 

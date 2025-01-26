@@ -14,11 +14,17 @@ public class PlayerController : MonoBehaviour
     private InputAction actionInput1;
     private InputAction actionInput2;
 
+    //
+
+    private InputAction peakUp;
+    private InputAction peakDown;
+
     // Modules
     private Move move;
     private Jump jump;
     private Claw claw;
     private Hand hand;
+    private TEMP_Look look;
 
     // =================================================================================================================
 
@@ -28,6 +34,7 @@ public class PlayerController : MonoBehaviour
         jump = GetComponent<Jump>();
         claw = GetComponent<Claw>();
         hand = GetComponent<Hand>();
+        look = GetComponent<TEMP_Look>();
 
         controls = new();
 
@@ -36,29 +43,51 @@ public class PlayerController : MonoBehaviour
         jumpInput = controls.Player.Jump;
         actionInput1 = controls.Player.Action1;
         actionInput2 = controls.Player.Action2;
+
+        peakUp = controls.Player.PeakUp;
+        peakDown = controls.Player.PeakDown;
     }
 
     private void OnEnable()
     {
         controls.Enable();
-        moveLeftInput.performed += move.ActLeft;
-        moveLeftInput.canceled += move.StopLeft;
-        moveRightInput.performed += move.ActRight;
-        moveRightInput.canceled += move.StopRight;
+
         jumpInput.performed += jump.Act;
         actionInput1.performed += claw.Act;
         actionInput2.performed += hand.Act;
+
+        EnableMovement();
     }
 
     private void OnDisable()
     {
         controls.Disable();
+        jumpInput.performed -= jump.Act;
+        actionInput1.performed -= claw.Act;
+        actionInput2.performed -= hand.Act;
+
+        KillMovement();
+    }
+
+    public void KillMovement()
+    {
         moveLeftInput.performed -= move.ActLeft;
         moveLeftInput.canceled -= move.StopLeft;
         moveRightInput.performed -= move.ActRight;
         moveRightInput.canceled -= move.StopRight;
-        jumpInput.performed -= jump.Act;
-        actionInput1.performed -= claw.Act;
-        actionInput2.performed -= hand.Act;
+
+        peakUp.performed -= look.ActUp;
+        peakDown.performed -= look.ActDown;
+    }
+
+    public void EnableMovement()
+    {
+        moveLeftInput.performed += move.ActLeft;
+        moveLeftInput.canceled += move.StopLeft;
+        moveRightInput.performed += move.ActRight;
+        moveRightInput.canceled += move.StopRight;
+
+        peakUp.performed += look.ActUp;
+        peakDown.performed += look.ActDown;
     }
 }

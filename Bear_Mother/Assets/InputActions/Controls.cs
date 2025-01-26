@@ -46,6 +46,24 @@ public partial class @Controls: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
+                    ""name"": ""Peak Up"",
+                    ""type"": ""Button"",
+                    ""id"": ""ee6018bc-6bef-423f-9acf-b600fbfbfa6f"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Peak Down"",
+                    ""type"": ""Button"",
+                    ""id"": ""9ec292f7-818a-4da9-b868-b88df1993775"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
                     ""name"": ""Jump"",
                     ""type"": ""Button"",
                     ""id"": ""75a6ba49-f905-469d-9965-7e1e9d0b41c8"",
@@ -159,6 +177,28 @@ public partial class @Controls: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""Move Right"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""53f67122-4eca-4ac1-b1a4-e785b62a90f6"",
+                    ""path"": ""<Keyboard>/upArrow"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Peak Up"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""82db7109-1e27-4806-b8b0-df66c5632ca0"",
+                    ""path"": ""<Keyboard>/downArrow"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Peak Down"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -748,6 +788,8 @@ public partial class @Controls: IInputActionCollection2, IDisposable
         m_Player = asset.FindActionMap("Player", throwIfNotFound: true);
         m_Player_MoveLeft = m_Player.FindAction("Move Left", throwIfNotFound: true);
         m_Player_MoveRight = m_Player.FindAction("Move Right", throwIfNotFound: true);
+        m_Player_PeakUp = m_Player.FindAction("Peak Up", throwIfNotFound: true);
+        m_Player_PeakDown = m_Player.FindAction("Peak Down", throwIfNotFound: true);
         m_Player_Jump = m_Player.FindAction("Jump", throwIfNotFound: true);
         m_Player_Action1 = m_Player.FindAction("Action 1", throwIfNotFound: true);
         m_Player_Action2 = m_Player.FindAction("Action 2", throwIfNotFound: true);
@@ -826,6 +868,8 @@ public partial class @Controls: IInputActionCollection2, IDisposable
     private List<IPlayerActions> m_PlayerActionsCallbackInterfaces = new List<IPlayerActions>();
     private readonly InputAction m_Player_MoveLeft;
     private readonly InputAction m_Player_MoveRight;
+    private readonly InputAction m_Player_PeakUp;
+    private readonly InputAction m_Player_PeakDown;
     private readonly InputAction m_Player_Jump;
     private readonly InputAction m_Player_Action1;
     private readonly InputAction m_Player_Action2;
@@ -835,6 +879,8 @@ public partial class @Controls: IInputActionCollection2, IDisposable
         public PlayerActions(@Controls wrapper) { m_Wrapper = wrapper; }
         public InputAction @MoveLeft => m_Wrapper.m_Player_MoveLeft;
         public InputAction @MoveRight => m_Wrapper.m_Player_MoveRight;
+        public InputAction @PeakUp => m_Wrapper.m_Player_PeakUp;
+        public InputAction @PeakDown => m_Wrapper.m_Player_PeakDown;
         public InputAction @Jump => m_Wrapper.m_Player_Jump;
         public InputAction @Action1 => m_Wrapper.m_Player_Action1;
         public InputAction @Action2 => m_Wrapper.m_Player_Action2;
@@ -853,6 +899,12 @@ public partial class @Controls: IInputActionCollection2, IDisposable
             @MoveRight.started += instance.OnMoveRight;
             @MoveRight.performed += instance.OnMoveRight;
             @MoveRight.canceled += instance.OnMoveRight;
+            @PeakUp.started += instance.OnPeakUp;
+            @PeakUp.performed += instance.OnPeakUp;
+            @PeakUp.canceled += instance.OnPeakUp;
+            @PeakDown.started += instance.OnPeakDown;
+            @PeakDown.performed += instance.OnPeakDown;
+            @PeakDown.canceled += instance.OnPeakDown;
             @Jump.started += instance.OnJump;
             @Jump.performed += instance.OnJump;
             @Jump.canceled += instance.OnJump;
@@ -872,6 +924,12 @@ public partial class @Controls: IInputActionCollection2, IDisposable
             @MoveRight.started -= instance.OnMoveRight;
             @MoveRight.performed -= instance.OnMoveRight;
             @MoveRight.canceled -= instance.OnMoveRight;
+            @PeakUp.started -= instance.OnPeakUp;
+            @PeakUp.performed -= instance.OnPeakUp;
+            @PeakUp.canceled -= instance.OnPeakUp;
+            @PeakDown.started -= instance.OnPeakDown;
+            @PeakDown.performed -= instance.OnPeakDown;
+            @PeakDown.canceled -= instance.OnPeakDown;
             @Jump.started -= instance.OnJump;
             @Jump.performed -= instance.OnJump;
             @Jump.canceled -= instance.OnJump;
@@ -1065,6 +1123,8 @@ public partial class @Controls: IInputActionCollection2, IDisposable
     {
         void OnMoveLeft(InputAction.CallbackContext context);
         void OnMoveRight(InputAction.CallbackContext context);
+        void OnPeakUp(InputAction.CallbackContext context);
+        void OnPeakDown(InputAction.CallbackContext context);
         void OnJump(InputAction.CallbackContext context);
         void OnAction1(InputAction.CallbackContext context);
         void OnAction2(InputAction.CallbackContext context);
