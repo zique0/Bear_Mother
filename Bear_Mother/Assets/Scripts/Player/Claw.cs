@@ -6,6 +6,8 @@ using UnityEngine.InputSystem;
 
 public class Claw : PlayerControl
 {
+    private Hand hand;
+
     [Header("States")]
     [SerializeField] private float attackCooldownTimer;
 
@@ -24,6 +26,11 @@ public class Claw : PlayerControl
 
     // =================================================================================================================
 
+    protected override void Init()
+    {
+        hand = GetComponent<Hand>();
+    }
+
     private void Start()
     {
         breakTargets.Add(breakTargetFront); // list in order of priority
@@ -40,11 +47,22 @@ public class Claw : PlayerControl
 
     public void Act(InputAction.CallbackContext context)
     {
+        Status.NotHidden();
+
+        if (hand.Holding)
+        {
+            hand.Throw();
+            return;
+        }
+
+        if (Airborne) return;
         StartCoroutine(PollAct(context));
     }
 
     private IEnumerator PollAct(InputAction.CallbackContext context)
     {
+        Controller.KillMovement();
+
         var elapsed = 0f;
 
         if (currentBreakTarget.Pos != null)
@@ -64,14 +82,16 @@ public class Claw : PlayerControl
         }
 
         Attack();
+
+        Controller.EnableMovement();
     }
 
     private void Update()
     {
         if (currentBreakTarget.Pos != null)
         {
-            Debug.Log(LevelManager.World.CellToWorld(LevelManager.World.WorldToCell(GetBreakTargetPos())));
-            Debug.Log(LevelManager.CurrentLevel.BreakableTiles.GetTile(LevelManager.CurrentLevel.BreakableTiles.WorldToCell(GetBreakTargetPos())));
+            // Debug.Log(LevelManager.World.CellToWorld(LevelManager.World.WorldToCell(GetBreakTargetPos())));
+            // Debug.Log(LevelManager.CurrentLevel.BreakableTiles.GetTile(LevelManager.CurrentLevel.BreakableTiles.WorldToCell(GetBreakTargetPos())));
 
             highlight.transform.position = LevelManager.World.CellToWorld(LevelManager.World.WorldToCell(GetBreakTargetPos()));
         }
@@ -145,19 +165,21 @@ public class Claw : PlayerControl
         // var xOffset = transform.position.x >= 0 ? 0 : -1;
         // var yOffset = transform.position.y >= 0 ? 0 : 1;
 
-        return new Vector2(Mathf.Round(currentBreakTarget.Pos.Value.x), Mathf.Round(currentBreakTarget.Pos.Value.y));
+        // return new Vector2(Mathf.Round(currentBreakTarget.Pos.Value.x), Mathf.Round(currentBreakTarget.Pos.Value.y));
+        return currentBreakTarget.Pos.Value;
     }
 
     [Header("Monitor")]
     [SerializeField] private List<BreakTarget> breakTargets = new();
+    private bool directionSetByInput;
 
     public void TryUpdateBreakTargetDirection(BreakDir to)
     {
-        /*
         if (targetByDir[to].Pos != null)
         {
             currentBreakTarget = targetByDir[to];
-        } */
+            directionSetByInput = true;
+        }
     }
 
     private IEnumerator UpdateBreakablePositions()
@@ -176,9 +198,20 @@ public class Claw : PlayerControl
                 if (hit) target.SetPos(hit.point, FacingRight);
                 else target.SetPos(null, FacingRight);
 
-                if (target.Pos != null)
+                if (target.Pos != null && !directionSetByInput)
                 {
                     currentBreakTarget = target;
+                }
+            }
+
+            if (directionSetByInput)
+            {
+                if (currentBreakTarget.Pos == null)
+                {
+                    directionSetByInput = false;
+
+                    var newTarget =  breakTargets.FindLast(x => x.Pos != null);
+                    if (newTarget != null) currentBreakTarget = newTarget;
                 }
             }
 
@@ -188,7 +221,6 @@ public class Claw : PlayerControl
 
     private IEnumerator TryBreak(InputAction.CallbackContext context)
     {
-        Controller.KillMovement();
         var elapsed = 0f;
 
         while (context.performed)

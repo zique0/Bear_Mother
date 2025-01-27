@@ -9,13 +9,16 @@ public abstract class PlayerControl : MonoBehaviour
     // Physics
     protected Rigidbody2D Rb { get; private set; }
     protected Collider2D Col { get; private set; }
+
     protected static bool FacingRight;
+    protected static bool Airborne;
 
     // Graphics
     protected SpriteRenderer Sprite { get; private set; }
     protected Animator Animator { get; private set; }
 
     // Logic
+    protected PlayerStatus Status { get; private set; }
     protected PlayerController Controller { get; private set; }
     protected LevelManager LevelManager { get; private set; }
     protected Tilemap World { get; private set; }
@@ -29,6 +32,7 @@ public abstract class PlayerControl : MonoBehaviour
         Sprite = GetComponent<SpriteRenderer>();
         Animator = GetComponent<Animator>();
 
+        Status = GetComponent<PlayerStatus>();
         Controller = GetComponent<PlayerController>();
         LevelManager = FindObjectOfType<LevelManager>();
         World = LevelManager.World;

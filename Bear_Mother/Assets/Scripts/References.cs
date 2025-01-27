@@ -9,10 +9,12 @@ public static class References
         public const string LevelBound = "LevelBound";
         public const string Item = "Item";
         public const string Totem = "Totem";
+        public const string Bush = "Bush";
     }
 
     public static class Layers
     {
+        public const string Player = "Player";
         public const string CanBreak = "CanBreak";
     }
 }

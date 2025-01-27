@@ -24,6 +24,7 @@ public class PlayerController : MonoBehaviour
     private Jump jump;
     private Claw claw;
     private Hand hand;
+    private Hide hide;
     private TEMP_Look look;
 
     // =================================================================================================================
@@ -34,6 +35,7 @@ public class PlayerController : MonoBehaviour
         jump = GetComponent<Jump>();
         claw = GetComponent<Claw>();
         hand = GetComponent<Hand>();
+        hide = GetComponent<Hide>();
         look = GetComponent<TEMP_Look>();
 
         controls = new();
@@ -51,26 +53,22 @@ public class PlayerController : MonoBehaviour
     private void OnEnable()
     {
         controls.Enable();
-
-        jumpInput.performed += jump.Act;
-        actionInput1.performed += claw.Act;
-        actionInput2.performed += hand.Act;
-
         EnableMovement();
     }
 
     private void OnDisable()
     {
         controls.Disable();
-        jumpInput.performed -= jump.Act;
-        actionInput1.performed -= claw.Act;
-        actionInput2.performed -= hand.Act;
-
         KillMovement();
     }
 
     public void KillMovement()
     {
+        jumpInput.performed -= jump.Act;
+        actionInput1.performed -= claw.Act;
+        actionInput2.performed -= hand.Act;
+        peakDown.performed -= hide.Act;
+
         moveLeftInput.performed -= move.ActLeft;
         moveLeftInput.canceled -= move.StopLeft;
         moveRightInput.performed -= move.ActRight;
@@ -82,6 +80,11 @@ public class PlayerController : MonoBehaviour
 
     public void EnableMovement()
     {
+        jumpInput.performed += jump.Act;
+        actionInput1.performed += claw.Act;
+        actionInput2.performed += hand.Act;
+        peakDown.performed += hide.Act;
+
         moveLeftInput.performed += move.ActLeft;
         moveLeftInput.canceled += move.StopLeft;
         moveRightInput.performed += move.ActRight;

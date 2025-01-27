@@ -6,7 +6,7 @@ using UnityEngine.InputSystem;
 public class Jump : PlayerControl
 {
     [field: Header("States")]
-    [field: SerializeField] public bool Airborne { get; private set; }
+    // [field: SerializeField] public bool Airborne { get; private set; }
     [field: SerializeField] public bool Grounded { get; private set; }
 
     [Header("Settings")]
@@ -22,7 +22,11 @@ public class Jump : PlayerControl
 
     public void Act(InputAction.CallbackContext _)
     {
+        Status.NotHidden();
+
         if (Airborne) return;
+
+        if (actRoutine != null) StopCoroutine(actRoutine);
         actRoutine = StartCoroutine(ActRoutine());
     }
 
@@ -45,6 +49,7 @@ public class Jump : PlayerControl
             yield return null;
         }
 
+        /*
         var yVel = Rb.velocity.y;
 
         while (yVel < 0)
@@ -55,7 +60,9 @@ public class Jump : PlayerControl
             yVel = Rb.velocity.y;
 
             yield return null;
-        }
+        } */
+
+        actRoutine = null;
     }
 
     // =================================================================================================================

@@ -27,9 +27,12 @@ public class LevelManager : MonoBehaviour
         var placeholders = FindObjectsOfType<LevelPlaceholder>().ToList();
         var dontFillWithDirt = new List<Vector3Int>();
 
+        var levelCount = 0;
+
         foreach (var placeholder in placeholders)
         {
-            Instantiate(levelPrefabs[Random.Range(0, levelPrefabs.Count)], placeholder.transform.position, Quaternion.identity);
+            var level = Instantiate(levelPrefabs[Random.Range(0, levelPrefabs.Count)], placeholder.transform.position, Quaternion.identity);
+            level.name = $"Level {levelCount++}";
 
             var placeholderTilemap = placeholder.GetComponentInChildren<Tilemap>();
 
@@ -52,14 +55,16 @@ public class LevelManager : MonoBehaviour
 
     public void DestroyWorldTile(Vector2 worldPos)
     {
+        Debug.Log($"try destroy world at {world.WorldToCell(worldPos)}");
+
         if (world.GetTile(world.WorldToCell(worldPos)) == dirt)
         {
-            Debug.Log("a");
+            Debug.Log($"destroy world at {world.WorldToCell(worldPos)}");
             world.SetTile(world.WorldToCell(worldPos) + Vector3Int.down, null);
         }
         else
         {
-            Debug.Log("b");
+            Debug.Log($"destroy level at {CurrentLevel.BreakableTiles.WorldToCell(worldPos)}");
             CurrentLevel.BreakableTiles.SetTile(CurrentLevel.BreakableTiles.WorldToCell(worldPos) + Vector3Int.down, null);
         }
     }

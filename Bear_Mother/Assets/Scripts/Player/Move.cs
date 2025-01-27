@@ -40,16 +40,24 @@ public class Move : PlayerControl
         Act(Vector2.right);
     }
 
-    public void StopLeft(InputAction.CallbackContext _) => Stop(Vector2.left);
-    public void StopRight(InputAction.CallbackContext _) => Stop(Vector2.right);
+    public void StopLeft(InputAction.CallbackContext _) { if (!FacingRight) Stop(Vector2.left); }
+    public void StopRight(InputAction.CallbackContext _) { if (FacingRight) Stop(Vector2.right); }
 
     // =================================================================================================================
 
     public void Act(Vector2 dir)
     {
+        Status.NotHidden();
         claw.TryUpdateBreakTargetDirection(Claw.BreakDir.FRONT);
 
-        if (actRoutine != null) StopCoroutine(actRoutine);
+        if (actRoutine != null)
+        {
+            var decel = Rb.velocity.x;
+            Rb.AddForce(new Vector2(-decel, 0), ForceMode2D.Impulse);
+
+            StopCoroutine(actRoutine);
+        }
+
         actRoutine = StartCoroutine(ActRoutine(dir));
     }
 
@@ -89,5 +97,7 @@ public class Move : PlayerControl
 
             yield return null;
         }
+
+        stopRoutine = null;
     }
 }

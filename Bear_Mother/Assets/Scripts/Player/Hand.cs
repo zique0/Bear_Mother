@@ -5,10 +5,13 @@ using UnityEngine.InputSystem;
 
 public class Hand : PlayerControl
 {
-    [Header("States")]
+    private Hunger selfHunger;
+    [SerializeField] private Hunger totemHunger;
+
+    [Header("Monitor")]
     [SerializeField] private Item held;
-    private bool Holding => held != null;
-    [SerializeField] private bool nearItem;
+    public bool Holding => held;
+    [SerializeField] private GameObject nearItem;
     [SerializeField] private bool nearTotem;
 
     [Header("Settings")]
@@ -18,6 +21,11 @@ public class Hand : PlayerControl
     private Coroutine actRoutine;
 
     // =================================================================================================================
+
+    override protected void Init()
+    {
+        selfHunger = GetComponent<Hunger>();
+    }
 
     public void Act(InputAction.CallbackContext context)
     {
@@ -37,7 +45,7 @@ public class Hand : PlayerControl
 
             if (elapsed >= holdInputThreshold)
             {
-                if (!Holding) Hold();
+                if (!held) Hold();
                 else Drop();
 
                 yield break;
@@ -46,7 +54,7 @@ public class Hand : PlayerControl
             yield return null;
         }
 
-        if (!Holding)
+        if (!held)
         {
             Hold();
             FeedSelf();
@@ -60,31 +68,65 @@ public class Hand : PlayerControl
 
     private void Hold() // hold without held
     {
-        Debug.Log("Held");
+        held = nearItem.GetComponent<Item>();
+
+        nearItem.transform.SetParent(transform);
+        nearItem.gameObject.SetActive(false);
+
+        nearItem = null;
     }
 
     private void FeedSelf() // press with held
     {
-        Debug.Log("Fed self");
+        if (held is Tool) return;
+
+        // var food = held as Food; used in case each food provides diff rates of fullness
+        selfHunger.GainFullness();
     }
 
     private void FeedTotem() // press near totem with held
     {
-        Debug.Log("Fed totem");
+        if (held is Tool) return;
+
+        // var food = held as Food;
+        totemHunger.GainFullness();
     }
 
-    private void Drop() // hold with held
+    private void Drop(bool reserveReference = false) // hold with held
     {
-        Debug.Log("Dropped");
+        held.gameObject.SetActive(true);
+        held.transform.SetParent(null);
+        held.transform.Translate(Vector3.up * 0.5f);
+
+        if (!reserveReference) held = null;
+    }
+
+    public void Throw()
+    {
+        StartCoroutine(ThrowRoutine());
+    }
+
+    private IEnumerator ThrowRoutine()
+    {
+        var heldRb = held.GetComponent<Rigidbody2D>();
+        heldRb.excludeLayers = LayerMask.NameToLayer(References.Layers.Player);
+
+        Drop(true);
+
+        held.Launch(FacingRight);
+        held = null;
+
+        yield return new WaitForSeconds(0.5f);
+        heldRb.excludeLayers = 0;
     }
 
     // =================================================================================================================
 
-    private void OnTriggerEnter2D(Collider2D collision)
+    private void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.gameObject.CompareTag(References.Tags.Item))
         {
-            nearItem = true;
+            nearItem = collision.gameObject;
         } 
         else if (collision.gameObject.CompareTag(References.Tags.Totem))
         {
@@ -92,11 +134,11 @@ public class Hand : PlayerControl
         }
     }
 
-    private void OnTriggerExit2D(Collider2D collision)
+    private void OnCollisionExit2D(Collision2D collision)
     {
         if (collision.gameObject.CompareTag(References.Tags.Item))
         {
-            nearItem = false;
+            if (collision.gameObject == nearItem) nearItem = null;
         }
         else if (collision.gameObject.CompareTag(References.Tags.Totem))
         {
