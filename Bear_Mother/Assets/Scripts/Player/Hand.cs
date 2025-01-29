@@ -11,8 +11,11 @@ public class Hand : PlayerControl
     [Header("Monitor")]
     [SerializeField] private Item held;
     public bool Holding => held;
-    [SerializeField] private GameObject nearItem;
+    [SerializeField] private Item inChest;
+
+    [Space(10), SerializeField] private GameObject nearItem;
     [SerializeField] private bool nearTotem;
+    [SerializeField] private Transform nearChest;
 
     [Header("Settings")]
     [SerializeField] private float holdInputThreshold;
@@ -29,7 +32,7 @@ public class Hand : PlayerControl
 
     public void Act(InputAction.CallbackContext context)
     {
-        if (!nearItem && !held) return;
+        if (!nearItem && !held && (!nearChest || !inChest)) return;
 
         if (actRoutine != null) StopCoroutine(actRoutine);
         actRoutine = StartCoroutine(PollAct(context));
@@ -39,7 +42,7 @@ public class Hand : PlayerControl
     {
         var elapsed = 0f;
 
-        while (context.performed)
+        while ((nearItem || held) && context.performed)
         {
             elapsed += Time.deltaTime;
 
@@ -56,29 +59,44 @@ public class Hand : PlayerControl
 
         if (!held)
         {
-            Hold();
-            FeedSelf();
+            if (nearChest && inChest)
+            {
+                DropFromChest();
+            }
+            else
+            {
+                Hold();
+                FeedSelf();
+            }
         }
         else
         {
-            if (!nearTotem) FeedSelf();
-            else FeedTotem();
+            if (nearTotem) FeedTotem();
+            else if (nearChest != null)
+            {
+                if (inChest) DropFromChest();
+                PlaceInChest();
+            }
+            else FeedSelf();
         }
     }
 
     private void Hold() // hold without held
     {
+        if (!nearItem) return;
+
         held = nearItem.GetComponent<Item>();
 
         nearItem.transform.SetParent(transform);
-        nearItem.gameObject.SetActive(false);
+        nearItem.transform.localPosition = Vector3.up;
+        nearItem.SetActive(false);
 
         nearItem = null;
     }
 
     private void FeedSelf() // press with held
     {
-        if (held is Tool) return;
+        if (!held || held is Tool) return;
 
         // var food = held as Food; used in case each food provides diff rates of fullness
         selfHunger.GainFullness();
@@ -86,23 +104,49 @@ public class Hand : PlayerControl
 
     private void FeedTotem() // press near totem with held
     {
-        if (held is Tool) return;
+        if (!held || held is Tool) return;
 
         // var food = held as Food;
         totemHunger.GainFullness();
     }
 
+    private void PlaceInChest()
+    {
+        if (!nearChest || !held) return;
+
+        inChest = held;
+        held = null;
+        inChest.transform.SetParent(nearChest);
+        inChest.gameObject.SetActive(false);
+    }
+
+    private void DropFromChest()
+    {
+        if (!nearChest || !inChest) return;
+
+        Debug.Log("hi");
+
+        var go = inChest.gameObject;
+        inChest = null;
+
+        go.SetActive(true);
+        go.transform.SetParent(null);
+    }
+
     private void Drop(bool reserveReference = false) // hold with held
     {
+        if (!held) return;
+
         held.gameObject.SetActive(true);
         held.transform.SetParent(null);
-        held.transform.Translate(Vector3.up * 0.5f);
 
         if (!reserveReference) held = null;
     }
 
     public void Throw()
     {
+        if (!held) return;
+
         StartCoroutine(ThrowRoutine());
     }
 
@@ -128,21 +172,40 @@ public class Hand : PlayerControl
         {
             nearItem = collision.gameObject;
         } 
-        else if (collision.gameObject.CompareTag(References.Tags.Totem))
-        {
-            nearTotem = true;
-        }
     }
 
     private void OnCollisionExit2D(Collision2D collision)
     {
         if (collision.gameObject.CompareTag(References.Tags.Item))
         {
-            if (collision.gameObject == nearItem) nearItem = null;
+            if (collision.gameObject == nearItem)
+            {
+                nearItem = null;
+            }
         }
-        else if (collision.gameObject.CompareTag(References.Tags.Totem))
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.gameObject.CompareTag(References.Tags.Totem))
+        {
+            nearTotem = true;
+        } 
+        else if (collision.gameObject.CompareTag("Chest"))
+        {
+            nearChest = collision.gameObject.transform;
+        }
+    }
+
+    private void OnTriggerExit2D(Collider2D collision)
+    {
+        if (collision.gameObject.CompareTag(References.Tags.Totem))
         {
             nearTotem = false;
+        } 
+        else if (collision.gameObject.CompareTag("Chest"))
+        {
+            nearChest = null;
         }
     }
 }

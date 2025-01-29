@@ -6,8 +6,7 @@ using UnityEngine.InputSystem;
 public class Jump : PlayerControl
 {
     [field: Header("States")]
-    // [field: SerializeField] public bool Airborne { get; private set; }
-    [field: SerializeField] public bool Grounded { get; private set; }
+    [SerializeField] private bool nearBamboo;
 
     [Header("Settings")]
     [SerializeField] private float jumpForce;
@@ -17,6 +16,7 @@ public class Jump : PlayerControl
 
     // Management
     private Coroutine actRoutine;
+    private bool acting;
 
     // =================================================================================================================
 
@@ -24,7 +24,27 @@ public class Jump : PlayerControl
     {
         Status.NotHidden();
 
+        if (OnBamboo)
+        {
+            OnBamboo = false;
+            Rb.gravityScale = 1;
+
+            return;
+        }
+
+        if (nearBamboo)
+        {
+            Debug.Log("Bamboo");
+
+            OnBamboo = true;
+            Rb.gravityScale = 0;
+
+            return;
+        }
+
         if (Airborne) return;
+
+        acting = true;
 
         if (actRoutine != null) StopCoroutine(actRoutine);
         actRoutine = StartCoroutine(ActRoutine());
@@ -49,30 +69,40 @@ public class Jump : PlayerControl
             yield return null;
         }
 
-        /*
-        var yVel = Rb.velocity.y;
-
-        while (yVel < 0)
-        {
-            var brake = yVel * (yVel - 0);
-
-            Rb.AddForce(new Vector2(-brake * Time.fixedDeltaTime, 0), ForceMode2D.Impulse);
-            yVel = Rb.velocity.y;
-
-            yield return null;
-        } */
-
         actRoutine = null;
     }
 
     // =================================================================================================================
 
-    private void OnCollisionEnter2D(Collision2D collision)
+    private void OnCollisionStay2D(Collision2D collision)
     {
+        if (!Airborne) return;
+
+        if (acting)
+        {
+            acting = false;
+            return;
+        }
+
         if (collision.contacts[0].normal.y > 0.5f)
         {
-            Grounded = true;
             Airborne = false;
+        }
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.CompareTag("Bamboo"))
+        {
+            nearBamboo = true;
+        }
+    }
+
+    private void OnTriggerExit2D(Collider2D collision)
+    {
+        if (collision.CompareTag("Bamboo"))
+        {
+            nearBamboo = false;
         }
     }
 }

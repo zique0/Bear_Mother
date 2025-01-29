@@ -52,13 +52,13 @@ public class PlayerController : MonoBehaviour
 
     private void OnEnable()
     {
-        controls.Enable();
+        controls?.Enable();
         EnableMovement();
     }
 
     private void OnDisable()
     {
-        controls.Disable();
+        controls?.Disable();
         KillMovement();
     }
 

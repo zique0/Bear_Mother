@@ -6,20 +6,21 @@ using UnityEngine.Tilemaps;
 
 public class Level : MonoBehaviour
 {
-    // [Header("States")]
-
-    // [Header("Monitor")]
-    // [SerializeField] private Grid gridState;
+    private static Vector2 shrinkedSize = new(19, 10);
+    private static Vector2 enlargedSize = new(20, 11);
 
     // References
     [SerializeField] private Tilemap breakableTiles;
     public Tilemap BreakableTiles => breakableTiles;
+    [SerializeField] private BoxCollider2D col;
 
-    // =================================================================================================================
-
-    /*
-    public void DestroyWorldTile(Vector2 worldPos)
+    public void Shrink()
     {
-        breakableTiles.SetTile(breakableTiles.WorldToCell(worldPos) + Vector3Int.down, null);
-    } */
+        col.size = shrinkedSize;
+    }
+
+    public void Enlarge()
+    {
+        col.size = enlargedSize;
+    }
 } 

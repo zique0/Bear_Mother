@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.02.00">
+	<object class="ParameterPreset" id="{42542494-f8af-4211-a338-3330b588433b}">
+		<property name="name">
+			<value>Focus</value>
+		</property>
+		<relationship name="folder">
+			<destination>{c01103cd-a0c1-4c60-9e46-fee236d8cdf3}</destination>
+		</relationship>
+		<relationship name="parameter">
+			<destination>{217aa911-02d6-4287-a6e5-8980bd50ae02}</destination>
+		</relationship>
+	</object>
+	<object class="GameParameter" id="{217aa911-02d6-4287-a6e5-8980bd50ae02}">
+		<property name="initialValue">
+			<value>0</value>
+		</property>
+		<property name="seekSpeed">
+			<value>1</value>
+		</property>
+		<property name="seekSpeedDescending">
+			<value>4.2000002861022949</value>
+		</property>
+		<property name="seekSpeedAsymmetric">
+			<value>true</value>
+		</property>
+	</object>
+</objects>

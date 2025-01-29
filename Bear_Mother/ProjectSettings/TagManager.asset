@@ -8,6 +8,8 @@ TagManager:
   - Item
   - LevelBound
   - Bush
+  - Bamboo
+  - Chest
   layers:
   - Default
   - TransparentFX

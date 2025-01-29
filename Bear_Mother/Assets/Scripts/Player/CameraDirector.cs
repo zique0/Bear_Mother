@@ -15,8 +15,8 @@ public class CameraDirector : MonoBehaviour
     {
         if (collision.CompareTag(References.Tags.LevelBound))
         {
+            Debug.Log("Level entered");
             levelManager.EnterLevel(collision);
-            // transform.parent = collision.transform;
         }
     }
 }

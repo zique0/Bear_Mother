@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.02.00">
+	<object class="AudioFile" id="{33774857-a3c0-41fb-afd8-f1a2fa819012}">
+		<property name="assetPath">
+			<value>bear.wav</value>
+		</property>
+		<property name="isStreaming">
+			<value>true</value>
+		</property>
+		<property name="frequencyInKHz">
+			<value>44.0999985</value>
+		</property>
+		<property name="channelCount">
+			<value>2</value>
+		</property>
+		<property name="length">
+			<value>130.16950113378684</value>
+		</property>
+		<relationship name="masterAssetFolder">
+			<destination>{3a15688d-0dd4-42fa-b651-cf80d31436ef}</destination>
+		</relationship>
+	</object>
+</objects>

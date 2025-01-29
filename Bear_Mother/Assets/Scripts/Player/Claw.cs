@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.UI;
 
 public class Claw : PlayerControl
 {
@@ -23,12 +24,14 @@ public class Claw : PlayerControl
 
     // TEMP
     [Space(10), SerializeField] private RectTransform highlight;
+    private Image highlightImage;
 
     // =================================================================================================================
 
     protected override void Init()
     {
         hand = GetComponent<Hand>();
+        highlightImage = highlight.GetComponent<Image>();
     }
 
     private void Start()
@@ -90,10 +93,12 @@ public class Claw : PlayerControl
     {
         if (currentBreakTarget.Pos != null)
         {
-            // Debug.Log(LevelManager.World.CellToWorld(LevelManager.World.WorldToCell(GetBreakTargetPos())));
-            // Debug.Log(LevelManager.CurrentLevel.BreakableTiles.GetTile(LevelManager.CurrentLevel.BreakableTiles.WorldToCell(GetBreakTargetPos())));
-
-            highlight.transform.position = LevelManager.World.CellToWorld(LevelManager.World.WorldToCell(GetBreakTargetPos()));
+            highlight.transform.position = LevelManager.CanBreak.CellToWorld(LevelManager.CanBreak.WorldToCell(GetBreakTargetPos()));
+            highlightImage.color = Color.red;
+        }
+        else
+        {
+            highlightImage.color = Color.clear;
         }
     }
 
@@ -132,6 +137,7 @@ public class Claw : PlayerControl
         [field: SerializeField] public BreakDir Dir { get; private set; }
         [field: SerializeField] public Vector2? Pos { get; private set; }
         [SerializeField] public Vector2 posCheck = Vector2.zero; // debug
+        public Vector2 PosCheck => posCheck;
 
         public BreakTarget(BreakDir dir) => Dir = dir;
 
@@ -139,11 +145,11 @@ public class Claw : PlayerControl
         {
             if (pos != null)
             {
-                var offset = facingRight ? -0.5f : -1.5f;
+                var offset = facingRight ? 0.1f : -0.1f;
 
-                if (Dir == BreakDir.FRONT) pos = new Vector2(Mathf.Ceil(pos.Value.x + offset), Mathf.Ceil(pos.Value.y));
-                else if (Dir == BreakDir.UP) pos = new Vector2(pos.Value.x, Mathf.Ceil(pos.Value.y));
-                else if (Dir == BreakDir.DOWN) pos = new Vector2(Mathf.Round(pos.Value.x), Mathf.Round(pos.Value.y));
+                if (Dir == BreakDir.FRONT) pos = new Vector2(pos.Value.x + offset, pos.Value.y);
+                else if (Dir == BreakDir.UP) pos = new Vector2(pos.Value.x, pos.Value.y + 0.1f);
+                else if (Dir == BreakDir.DOWN) pos = new Vector2(pos.Value.x, pos.Value.y - 0.1f);
             }
 
             Pos = pos;
@@ -162,11 +168,7 @@ public class Claw : PlayerControl
 
     public Vector2 GetBreakTargetPos()
     {
-        // var xOffset = transform.position.x >= 0 ? 0 : -1;
-        // var yOffset = transform.position.y >= 0 ? 0 : 1;
-
-        // return new Vector2(Mathf.Round(currentBreakTarget.Pos.Value.x), Mathf.Round(currentBreakTarget.Pos.Value.y));
-        return currentBreakTarget.Pos.Value;
+        return currentBreakTarget.Pos.Value + Vector2.up;
     }
 
     [Header("Monitor")]

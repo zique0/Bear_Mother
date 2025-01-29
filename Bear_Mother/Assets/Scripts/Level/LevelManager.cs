@@ -1,4 +1,5 @@
 using Cinemachine;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,14 +12,26 @@ public class LevelManager : MonoBehaviour
     [SerializeField] private List<BlockDataset> dataset;
 
     [Header("Load Level")]
-    [SerializeField] private Tilemap world;
-    public Tilemap World => world;
-    [SerializeField] private List<GameObject> levelPrefabs;
+    [SerializeField] private Tilemap canBreak;
+    public Tilemap CanBreak => canBreak;
+    [SerializeField] private Tilemap bamboo;
+    public Tilemap Bamboo => bamboo;
+    [SerializeField] private List<LevelPreset> levelPrefabs;
     [SerializeField] private TileBase dirt;
 
     [field: Header("Monitor")]
     [SerializeField] private CinemachineVirtualCamera _camera;
     [field: SerializeField] public Level CurrentLevel { get; private set; }
+
+    [Serializable]
+    public class LevelPreset
+    {
+        [field: SerializeField] public GameObject Prefab { get; private set; }
+        [field: SerializeField] public int MinCount { get; private set; }
+        [field: SerializeField] public int Count { get; set; }
+    }
+
+    private List<Level> levels = new();
 
     // =================================================================================================================
 
@@ -31,47 +44,57 @@ public class LevelManager : MonoBehaviour
 
         foreach (var placeholder in placeholders)
         {
-            var level = Instantiate(levelPrefabs[Random.Range(0, levelPrefabs.Count)], placeholder.transform.position, Quaternion.identity);
+            var level = Instantiate(levelPrefabs[UnityEngine.Random.Range(0, levelPrefabs.Count)].Prefab, placeholder.transform.position, Quaternion.identity);
             level.name = $"Level {levelCount++}";
+            levels.Add(level.GetComponent<Level>());
 
             var placeholderTilemap = placeholder.GetComponentInChildren<Tilemap>();
 
             foreach (var point in placeholderTilemap.cellBounds.allPositionsWithin)
             {
-                dontFillWithDirt.Add(world.WorldToCell(placeholderTilemap.GetCellCenterWorld(point)));
+                dontFillWithDirt.Add(canBreak.WorldToCell(placeholderTilemap.GetCellCenterWorld(point)));
             }
         }
 
         placeholders.ForEach(x => Destroy(x.gameObject));
 
-        foreach (var point in world.cellBounds.allPositionsWithin)
+        foreach (var point in canBreak.cellBounds.allPositionsWithin)
         {
-            world.SetTile(point, null);
+            canBreak.SetTile(point, null);
 
             if (dontFillWithDirt.Contains(point)) continue;
-            world.SetTile(point, dirt);
+            canBreak.SetTile(point, dirt);
+        }
+
+        foreach (var level in levels)
+        {
+            foreach (var point in level.BreakableTiles.cellBounds.allPositionsWithin)
+            {
+                var tile = level.BreakableTiles.GetTile(point);
+
+                if (tile != null)
+                {
+                    level.BreakableTiles.SetTile(point, null);
+                    var worldPos = level.BreakableTiles.CellToWorld(point);
+                    canBreak.SetTile(canBreak.WorldToCell(worldPos), tile);
+                }
+            }
         }
     }
 
     public void DestroyWorldTile(Vector2 worldPos)
     {
-        Debug.Log($"try destroy world at {world.WorldToCell(worldPos)}");
-
-        if (world.GetTile(world.WorldToCell(worldPos)) == dirt)
-        {
-            Debug.Log($"destroy world at {world.WorldToCell(worldPos)}");
-            world.SetTile(world.WorldToCell(worldPos) + Vector3Int.down, null);
-        }
-        else
-        {
-            Debug.Log($"destroy level at {CurrentLevel.BreakableTiles.WorldToCell(worldPos)}");
-            CurrentLevel.BreakableTiles.SetTile(CurrentLevel.BreakableTiles.WorldToCell(worldPos) + Vector3Int.down, null);
-        }
+        canBreak.SetTile(canBreak.WorldToCell(worldPos) + Vector3Int.down, null);
     }
 
     public void EnterLevel(Collider2D bound)
     {
+        if (CurrentLevel == null) return;
+
+        CurrentLevel.Enlarge();
+
         CurrentLevel = bound.GetComponent<Level>();
+        CurrentLevel.Shrink();
 
         var confiner = _camera.GetComponent<CinemachineConfiner2D>();
         confiner.m_BoundingShape2D = bound;

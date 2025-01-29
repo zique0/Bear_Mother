@@ -31,12 +31,16 @@ public class Move : PlayerControl
     public void ActLeft(InputAction.CallbackContext _)
     {
         FacingRight = false;
+        Sprite.flipX = false;
+
         Act(Vector2.left);
     }
 
     public void ActRight(InputAction.CallbackContext _)
     {
         FacingRight = true;
+        Sprite.flipX = true;
+
         Act(Vector2.right);
     }
 
@@ -47,6 +51,9 @@ public class Move : PlayerControl
 
     public void Act(Vector2 dir)
     {
+        if (OnBamboo) return;
+        Animator.SetTrigger("Run");
+
         Status.NotHidden();
         claw.TryUpdateBreakTargetDirection(Claw.BreakDir.FRONT);
 
@@ -84,6 +91,8 @@ public class Move : PlayerControl
     {
         if (stopRoutine != null) StopCoroutine(stopRoutine);
         stopRoutine = StartCoroutine(StopRoutine(dir));
+
+        Animator.SetTrigger("Idle");
     }
 
     private IEnumerator StopRoutine(Vector2 dir)
