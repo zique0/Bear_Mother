@@ -24,6 +24,8 @@ public class Jump : PlayerControl
     {
         Status.NotHidden();
 
+        if (Airborne) return;
+
         if (OnBamboo)
         {
             OnBamboo = false;
@@ -39,10 +41,11 @@ public class Jump : PlayerControl
             OnBamboo = true;
             Rb.gravityScale = 0;
 
+            Rb.velocity = Vector2.zero;
+            Rb.transform.position = LevelManager.CanBreak.CellToWorld(LevelManager.CanBreak.WorldToCell(transform.position)) + new Vector3(0.5f, 0.5f); ;
+
             return;
         }
-
-        if (Airborne) return;
 
         acting = true;
 

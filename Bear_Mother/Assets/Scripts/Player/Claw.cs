@@ -13,6 +13,8 @@ public class Claw : PlayerControl
     [SerializeField] private float attackCooldownTimer;
 
     [Header("Settings")]
+    [SerializeField] private int damage;
+    [SerializeField] private float attackRadius;
     [SerializeField] private float breakRange;
     [SerializeField] private float holdInputThreshold;
     [SerializeField] private float breakDuration;
@@ -108,7 +110,14 @@ public class Claw : PlayerControl
     {
         if (attackCooldownTimer < attackCooldownDuration || attackCooldownRoutine != null) return;
 
-        Debug.Log("Attacking");
+        var enemies = Physics2D.OverlapCircleAll(transform.position + (FacingRight ? Vector3.right : Vector3.left), attackRadius, LayerMask.GetMask("Enemy"));
+        foreach (var enemy in enemies)
+        {
+            if (enemy.TryGetComponent<Enemy>(out var logic))
+            {
+                logic.TakeDamage(damage);
+            }
+        }
 
         attackCooldownRoutine = StartCoroutine(CooldownAttack());
     }
@@ -255,5 +264,8 @@ public class Claw : PlayerControl
         Gizmos.color = Color.yellow;
         Gizmos.DrawLine(transform.position, transform.position + Vector3.down * breakRange);
         Gizmos.DrawLine(transform.position, transform.position + Vector3.up * breakRange);
+
+        Gizmos.color = Color.cyan;
+        Gizmos.DrawWireSphere(transform.position + (FacingRight ? Vector3.right : Vector3.left), attackRadius);
     }
 }

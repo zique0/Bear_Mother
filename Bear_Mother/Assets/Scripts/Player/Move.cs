@@ -49,10 +49,17 @@ public class Move : PlayerControl
 
     // =================================================================================================================
 
+    private void Update()
+    {
+        if (!Airborne && Rb.velocity.magnitude >= 0.5f) Animator.SetTrigger("Run");
+        else Animator.SetTrigger("Idle");
+    }
+
+    // =================================================================================================================
+
     public void Act(Vector2 dir)
     {
         if (OnBamboo) return;
-        Animator.SetTrigger("Run");
 
         Status.NotHidden();
         claw.TryUpdateBreakTargetDirection(Claw.BreakDir.FRONT);
@@ -91,8 +98,6 @@ public class Move : PlayerControl
     {
         if (stopRoutine != null) StopCoroutine(stopRoutine);
         stopRoutine = StartCoroutine(StopRoutine(dir));
-
-        Animator.SetTrigger("Idle");
     }
 
     private IEnumerator StopRoutine(Vector2 dir)

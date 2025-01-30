@@ -12,7 +12,10 @@ public class Level : MonoBehaviour
     // References
     [SerializeField] private Tilemap breakableTiles;
     public Tilemap BreakableTiles => breakableTiles;
-    [SerializeField] private BoxCollider2D col;
+    [SerializeField] private Tilemap bound;
+    public Tilemap Bound => bound;
+
+    [Space(10), SerializeField] private BoxCollider2D col;
 
     public void Shrink()
     {

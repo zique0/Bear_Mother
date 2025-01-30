@@ -10,6 +10,7 @@ TagManager:
   - Bush
   - Bamboo
   - Chest
+  - AccessBound
   layers:
   - Default
   - TransparentFX
@@ -19,9 +20,9 @@ TagManager:
   - UI
   - CanBreak
   - Player
-  - 
-  - 
-  - 
+  - LevelBound
+  - AccessBound
+  - Enemy
   - 
   - 
   - 

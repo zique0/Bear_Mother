@@ -41,9 +41,12 @@ public class Bamboo : Tool
                 levelManager.Bamboo.SetTile(new Vector3Int(pos.x, pos.y, 0), tile);
             }
 
-            var aboveTile = levelManager.CanBreak.GetTile((Vector3Int)bamboo[^1] + Vector3Int.up);
-
-            yield return new WaitUntil(() => !aboveTile || aboveTile == bambooTop || aboveTile == bambooMiddle || aboveTile == bambooBottom);
+            TileBase aboveTile = levelManager.CanBreak.GetTile((Vector3Int)bamboo[^1] + Vector3Int.up);
+            while (aboveTile)
+            {
+                aboveTile = levelManager.CanBreak.GetTile((Vector3Int)bamboo[^1] + Vector3Int.up);
+                yield return null;
+            }
 
             bamboo.Add(bamboo[^1] + Vector2Int.up);
             yield return new WaitForSeconds(0.5f);

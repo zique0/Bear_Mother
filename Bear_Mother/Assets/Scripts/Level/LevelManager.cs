@@ -32,6 +32,7 @@ public class LevelManager : MonoBehaviour
     }
 
     private List<Level> levels = new();
+    [SerializeField] private List<Level> levelsAccessedByPlayer = new();
 
     // =================================================================================================================
 
@@ -89,7 +90,16 @@ public class LevelManager : MonoBehaviour
 
     public void EnterLevel(Collider2D bound)
     {
-        if (CurrentLevel == null) return;
+        if (CurrentLevel == null)
+        {
+            CurrentLevel = bound.GetComponent<Level>();
+            CurrentLevel.Shrink();
+
+            var con = _camera.GetComponent<CinemachineConfiner2D>();
+            con.m_BoundingShape2D = bound;
+
+            return;
+        }
 
         CurrentLevel.Enlarge();
 
@@ -98,6 +108,20 @@ public class LevelManager : MonoBehaviour
 
         var confiner = _camera.GetComponent<CinemachineConfiner2D>();
         confiner.m_BoundingShape2D = bound;
+
+        if (!levelsAccessedByPlayer.Contains(CurrentLevel)) levelsAccessedByPlayer.Add(CurrentLevel);
+    }
+
+    public void AccessedLevel(Collider2D bound)
+    {
+        var level = bound.transform.parent.GetComponent<Level>();
+        if (!levelsAccessedByPlayer.Contains(level)) levelsAccessedByPlayer.Add(level);
+
+        var enemies = FindObjectsOfType<Enemy>().ToList();
+        foreach (var enemy in enemies)
+        {
+            enemy.UpdateLevelsInReach(levelsAccessedByPlayer);
+        }
     }
 
     // =================================================================================================================

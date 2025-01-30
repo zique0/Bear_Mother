@@ -21,6 +21,12 @@ public class PlayerStatus : MonoBehaviour
         sprite = GetComponent<SpriteRenderer>();
     }
 
+    public void TakeDamage(int deltaVal)
+    {
+        Health -= deltaVal;
+        if (Health <= 0) TEMP_Death();
+    }
+
     public void TEMP_Death()
     {
         Debug.Log("Player died");
