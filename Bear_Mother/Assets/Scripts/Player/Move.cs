@@ -21,6 +21,8 @@ public class Move : PlayerControl
     private Coroutine actRoutine;
     private Coroutine stopRoutine;
 
+    private bool wallCollide;
+
     // =================================================================================================================
 
     protected override void Init()
@@ -117,5 +119,14 @@ public class Move : PlayerControl
         }
 
         stopRoutine = null;
+    }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (actRoutine == null) return;
+        if (collision.GetContact(0).normal.x != 0)
+        {
+            Stop(Rb.velocity.x > 0 ? Vector2.right : Vector2.left);
+        }
     }
 }
