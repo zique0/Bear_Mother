@@ -100,6 +100,9 @@ public class Hand : PlayerControl
 
         // var food = held as Food; used in case each food provides diff rates of fullness
         selfHunger.GainFullness();
+
+        Destroy(held.gameObject);
+        held = null;
     }
 
     private void FeedTotem() // press near totem with held
@@ -108,6 +111,9 @@ public class Hand : PlayerControl
 
         // var food = held as Food;
         totemHunger.GainFullness();
+
+        Destroy(held.gameObject);
+        held = null;
     }
 
     private void PlaceInChest()
@@ -116,6 +122,7 @@ public class Hand : PlayerControl
 
         inChest = held;
         held = null;
+
         inChest.transform.SetParent(nearChest);
         inChest.gameObject.SetActive(false);
     }
@@ -124,7 +131,7 @@ public class Hand : PlayerControl
     {
         if (!nearChest || !inChest) return;
 
-        Debug.Log("hi");
+        // Debug.Log("hi");
 
         var go = inChest.gameObject;
         inChest = null;
@@ -161,7 +168,7 @@ public class Hand : PlayerControl
         held = null;
 
         yield return new WaitForSeconds(0.5f);
-        heldRb.excludeLayers = 0;
+        if (heldRb) heldRb.excludeLayers = 0;
     }
 
     // =================================================================================================================

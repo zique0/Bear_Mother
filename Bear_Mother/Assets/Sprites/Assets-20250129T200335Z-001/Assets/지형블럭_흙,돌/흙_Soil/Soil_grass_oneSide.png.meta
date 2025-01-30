@@ -125,8 +125,8 @@ TextureImporter:
     outline: []
     physicsShape:
     - - {x: 54, y: -54}
-      - {x: 54, y: 54}
-      - {x: -54, y: 54}
+      - {x: 54, y: 49}
+      - {x: -54, y: 49}
       - {x: -54, y: -54}
       - {x: 54, y: -54}
       - {x: 54, y: -54}

@@ -28,7 +28,9 @@ public abstract class Item : MonoBehaviour
     public virtual void Launch(bool rightward)
     {
         var dir = rightward ? Vector2.right : Vector2.left;
-        var force = Quaternion.Euler(0, 0, launchAngle) * dir * launchForce;
+        var mult = rightward ? 1 : -1;
+
+        var force = Quaternion.Euler(0, 0, launchAngle * mult) * dir * launchForce;
 
         Rb.AddForce(force, ForceMode2D.Impulse);
 

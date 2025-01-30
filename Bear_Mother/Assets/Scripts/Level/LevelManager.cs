@@ -135,7 +135,16 @@ public class LevelManager : MonoBehaviour
                 BlockData.Add(tile, set.Data);
             }
         }
+    }
 
+    private void Start()
+    {
+        StartCoroutine(TEST());
+    }
+
+    private IEnumerator TEST()
+    {
+        yield return new WaitForSeconds(0.1f);
         LoadWorld();
     }
 

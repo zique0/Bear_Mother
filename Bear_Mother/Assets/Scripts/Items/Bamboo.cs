@@ -19,8 +19,10 @@ public class Bamboo : Tool
 
     protected override void FunctionOnLand(Vector3 pos)
     {
-        var validPos = levelManager.CanBreak.WorldToCell(pos);
+        var validPos = levelManager.CanBreak.WorldToCell(pos + Vector3.down * 0.5f);
+
         bamboo.Add(new Vector2Int(validPos.x, validPos.y + 1));
+
         StartCoroutine(BambooRoutine());
 
         Debug.Log("a");

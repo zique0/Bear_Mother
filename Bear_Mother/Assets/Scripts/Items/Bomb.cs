@@ -23,5 +23,7 @@ public class Bomb : Tool
                 enemy.TakeDamage(damage);
             }
         }
+
+        Destroy(gameObject);
     }
 }

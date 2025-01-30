@@ -6,7 +6,7 @@ using UnityEngine.Tilemaps;
 
 public class Level : MonoBehaviour
 {
-    private static Vector2 shrinkedSize = new(19, 10);
+    private static Vector2 shrinkedSize = new(18, 9);
     private static Vector2 enlargedSize = new(20, 11);
 
     // References
@@ -19,11 +19,11 @@ public class Level : MonoBehaviour
 
     public void Shrink()
     {
-        col.size = shrinkedSize;
+        // col.size = shrinkedSize;
     }
 
     public void Enlarge()
     {
-        col.size = enlargedSize;
+        // col.size = enlargedSize;
     }
 } 

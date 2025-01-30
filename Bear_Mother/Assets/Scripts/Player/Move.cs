@@ -21,8 +21,6 @@ public class Move : PlayerControl
     private Coroutine actRoutine;
     private Coroutine stopRoutine;
 
-    private bool wallCollide;
-
     // =================================================================================================================
 
     protected override void Init()
@@ -53,7 +51,7 @@ public class Move : PlayerControl
 
     private void Update()
     {
-        if (!Airborne && Rb.velocity.magnitude >= 0.5f) Animator.SetTrigger("Run");
+        if (!Airborne && Rb.velocity.magnitude > 5) Animator.SetTrigger("Run");
         else Animator.SetTrigger("Idle");
     }
 
@@ -81,7 +79,10 @@ public class Move : PlayerControl
     {
         if (stopRoutine != null) StopCoroutine(stopRoutine);
 
-        while (true)
+        Vector2 prevPos = Vector2.zero;
+        var timeOut = 0f;
+
+        while (!OnBamboo)
         {
             Rb.AddForce(accelRate * Time.fixedDeltaTime * dir, ForceMode2D.Impulse);
             speed = Mathf.Abs(Rb.velocity.x);
@@ -92,7 +93,22 @@ public class Move : PlayerControl
                 Rb.AddForce(new Vector2(-brake * dir.x * Time.fixedDeltaTime, 0), ForceMode2D.Impulse);
             }
 
-            if (OnBamboo) yield break;
+            if (Vector2.Distance(prevPos, transform.position) < 0.05f)
+            {
+                timeOut += Time.deltaTime;
+
+                if (timeOut > 0.05f)
+                {
+                    Rb.velocity = Vector2.zero;
+                    break;
+                }
+            }
+            else
+            {
+                timeOut = 0;
+            }
+
+            prevPos = transform.position;
 
             yield return null;
         }
@@ -108,25 +124,29 @@ public class Move : PlayerControl
     {
         if (actRoutine != null) StopCoroutine(actRoutine);
 
-        while (speed > minSpeed)
+        var decel = Rb.velocity.x;
+        Rb.AddForce(new Vector2(-decel, 0), ForceMode2D.Impulse);
+
+        /*
+        while (!OnBamboo && speed > minSpeed)
         {
             Rb.AddForce(decelRate * Time.fixedDeltaTime * -dir, ForceMode2D.Impulse);
             speed = Mathf.Abs(Rb.velocity.x);
 
-            if (OnBamboo) yield break;
-
             yield return null;
-        }
+        } */
 
         stopRoutine = null;
+        yield return null;
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
+        /*
         if (actRoutine == null) return;
-        if (collision.GetContact(0).normal.x != 0)
+        if (collision.GetContact(0).normal.y <= 0f)
         {
             Stop(Rb.velocity.x > 0 ? Vector2.right : Vector2.left);
-        }
+        } */
     }
 }
