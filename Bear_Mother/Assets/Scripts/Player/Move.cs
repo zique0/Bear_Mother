@@ -90,6 +90,8 @@ public class Move : PlayerControl
                 Rb.AddForce(new Vector2(-brake * dir.x * Time.fixedDeltaTime, 0), ForceMode2D.Impulse);
             }
 
+            if (OnBamboo) yield break;
+
             yield return null;
         }
     }
@@ -108,6 +110,8 @@ public class Move : PlayerControl
         {
             Rb.AddForce(decelRate * Time.fixedDeltaTime * -dir, ForceMode2D.Impulse);
             speed = Mathf.Abs(Rb.velocity.x);
+
+            if (OnBamboo) yield break;
 
             yield return null;
         }

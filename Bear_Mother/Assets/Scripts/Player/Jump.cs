@@ -30,11 +30,8 @@ public class Jump : PlayerControl
         {
             OnBamboo = false;
             Rb.gravityScale = 1;
-
-            return;
         }
-
-        if (nearBamboo)
+        else if (nearBamboo)
         {
             Debug.Log("Bamboo");
 
