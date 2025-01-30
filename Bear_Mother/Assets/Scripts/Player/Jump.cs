@@ -30,6 +30,8 @@ public class Jump : PlayerControl
         {
             OnBamboo = false;
             Rb.gravityScale = 1;
+
+            return;
         }
         else if (nearBamboo)
         {
