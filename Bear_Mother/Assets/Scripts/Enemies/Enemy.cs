@@ -234,7 +234,7 @@ public abstract class Enemy : MonoBehaviour
     protected virtual IEnumerator Aggro()
     {
         Debug.Log("Aggro");
-        sprite.color = Color.red;
+        sprite.color = Color.white;
 
         yield return null;
     }

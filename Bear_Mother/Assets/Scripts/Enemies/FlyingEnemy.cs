@@ -22,6 +22,8 @@ public class FlyingEnemy : Enemy
     {
         StartCoroutine(base.Aggro());
 
+        animator.SetTrigger("Attack");
+
         rb.velocity = Vector2.zero;
 
         var elapsed = 0f;
@@ -52,6 +54,8 @@ public class FlyingEnemy : Enemy
 
                     if (coolingDown)
                     {
+                        animator.SetTrigger("Idle");
+
                         rb.velocity = Vector2.zero;
                         col.enabled = false;
 
@@ -81,6 +85,8 @@ public class FlyingEnemy : Enemy
     protected override IEnumerator Idle()
     {
         StartCoroutine(base.Idle());
+
+        animator.SetTrigger("Idle");
 
         transform.position = new Vector2(transform.position.x, currentLevel.Bound.CellToWorld(Vector3Int.up * elevation).y);
 
