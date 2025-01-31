@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class DayCycleUI : MonoBehaviour
 {
-    private TextMeshProUGUI text;
+    public TextMeshProUGUI text;
 
     private void Awake()
     {
@@ -14,6 +14,6 @@ public class DayCycleUI : MonoBehaviour
 
     public void UpdateUI(int dayCount)
     {
-        text.text = $"Day: {dayCount}";
+        text.text = $"Day {dayCount}";
     }
 }

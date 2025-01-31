@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-// ±èÁöÈÆ »ç¶ûÇØ¿ä!!
+// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Ø¿ï¿½!!
 
 public class PlayerStatus : MonoBehaviour
 {
@@ -14,22 +14,31 @@ public class PlayerStatus : MonoBehaviour
     [SerializeField] private int maxHealth = 10;
 
     private SpriteRenderer sprite;
+    private HealthUI healthUI;
 
     private void Awake()
     {
         Health = maxHealth;
         sprite = GetComponent<SpriteRenderer>();
+        healthUI = FindObjectOfType<HealthUI>();
     }
 
     public void TakeDamage(int deltaVal)
     {
         Health -= deltaVal;
         if (Health <= 0) TEMP_Death();
+
+        healthUI.UpdateHealthUI(); // ì²´ë ¥ ë³€ê²½ ì‹œ UI ì—…ë°ì´íŠ¸
     }
 
     public void TEMP_Death()
     {
         Debug.Log("Player died");
+    }
+     public void Heal(int deltaVal)
+    {
+        Health = Mathf.Min(Health + deltaVal, maxHealth);
+        healthUI.UpdateHealthUI(); // ì²´ë ¥ íšŒë³µ ì‹œ UI ì—…ë°ì´íŠ¸
     }
 
     public void SetHidden()
