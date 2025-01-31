@@ -32,7 +32,9 @@ public class LevelManager : MonoBehaviour
     }
 
     private List<Level> levels = new();
+
     [SerializeField] private List<Level> levelsAccessedByPlayer = new();
+    public Level levelWithMother;
 
     // =================================================================================================================
 

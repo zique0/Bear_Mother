@@ -24,8 +24,6 @@ public class Jump : PlayerControl
     {
         Status.NotHidden();
 
-        if (Airborne) return;
-
         if (OnBamboo)
         {
             OnBamboo = false;
@@ -45,6 +43,8 @@ public class Jump : PlayerControl
 
             return;
         }
+
+        if (Airborne) return;
 
         acting = true;
 

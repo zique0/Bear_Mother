@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Rendering.Universal; 
+using UnityEngine.Rendering.Universal;
 using DG.Tweening;
 
 public class DayCycle : MonoBehaviour
@@ -33,18 +33,18 @@ public class DayCycle : MonoBehaviour
     public delegate void NightEvent();
     public static event NightEvent OnNight;
 
-     // Global Light 2D Reference
+    // Global Light 2D Reference
     [Header("Lighting Settings")]
-    [SerializeField] private Light2D globalLight; 
+    [SerializeField] private Light2D globalLight;
 
     // ===============================================================================================================
 
     private void Awake()
     {
         CurrentDay = Day.ONE;
-        
-        CurrentState = State.NIGHT;
-        OnNight?.Invoke();
+
+        if (CurrentState == State.NIGHT) OnNight?.Invoke();
+        else OnDay?.Invoke();
 
         sceneManager = FindObjectOfType<SceneManager>();
         UI = FindObjectOfType<DayCycleUI>();
@@ -82,7 +82,7 @@ public class DayCycle : MonoBehaviour
                     halfDayRaised = false;
                 }
                 sendSignalToLight2D();
-            } 
+            }
             else
             {
                 stateProgress = elapsed / nightDuration;
@@ -107,7 +107,7 @@ public class DayCycle : MonoBehaviour
 
                         OnHalfDay?.Invoke();
                         halfDayRaised = false;
-                        
+
                         //===맹 추가
                         //밤이 되면 조명 변경
                     }
@@ -119,7 +119,7 @@ public class DayCycle : MonoBehaviour
                 }
                 sendSignalToLight2D();
             }
-            
+
             elapsed++;
             yield return new WaitForSeconds(1 / tickPerSec);
         }
@@ -130,35 +130,35 @@ public class DayCycle : MonoBehaviour
         sceneManager.LoadEnding();
     }
 
-            ///// -- 맹 추가 코드 Global Light 2D 변경
-        public void sendSignalToLight2D()
-        {
+    ///// -- 맹 추가 코드 Global Light 2D 변경
+    public void sendSignalToLight2D()
+    {
         // Debug.Log("시그널보내...");
-            if (globalLight != null)
+        if (globalLight != null)
+        {
+            if (CurrentState == State.DAY)
             {
-                if (CurrentState == State.DAY)
-                {
-                   // globalLight.intensity = 1.0f; // 낮에는 밝게
-                   // globalLight.color = Color.white;
-                    // ☀️ 낮으로 서서히 변환 (밝기: 1.0, 색상: 흰색)
-                    DOVirtual.Float(globalLight.intensity, 1.0f, 2.0f, value => globalLight.intensity = value);
-                    DOVirtual.Color(globalLight.color, Color.white, 2.0f, value => globalLight.color = value);
-                }
-            
-                else
-                {
-                   // globalLight.intensity = 1f; // 밤에는 어둡게
-                    //globalLight.color = Color.black;
-                    //globalLight.color = new Color(0.1f, 0.1f, 0.2f); // 어두운 파란색
-                     // 🌙 밤으로 서서히 변환 (밝기: 0.2, 색상: 어두운 파란색)
-                     DOVirtual.Float(globalLight.intensity, 0.05f, 2.0f, value => globalLight.intensity = value);
-                    DOVirtual.Color(globalLight.color, new Color(0.1f, 0.1f, 0.2f), 2.0f, value => globalLight.color = value);
-                }
+                // globalLight.intensity = 1.0f; // 낮에는 밝게
+                // globalLight.color = Color.white;
+                // ☀️ 낮으로 서서히 변환 (밝기: 1.0, 색상: 흰색)
+                DOVirtual.Float(globalLight.intensity, 1.0f, 2.0f, value => globalLight.intensity = value);
+                DOVirtual.Color(globalLight.color, Color.white, 2.0f, value => globalLight.color = value);
             }
+
             else
             {
-                Debug.LogWarning("Global Light 2D가 설정되지 않았습니다!");
+                // globalLight.intensity = 1f; // 밤에는 어둡게
+                //globalLight.color = Color.black;
+                //globalLight.color = new Color(0.1f, 0.1f, 0.2f); // 어두운 파란색
+                // 🌙 밤으로 서서히 변환 (밝기: 0.2, 색상: 어두운 파란색)
+                DOVirtual.Float(globalLight.intensity, 0.05f, 2.0f, value => globalLight.intensity = value);
+                DOVirtual.Color(globalLight.color, new Color(0.1f, 0.1f, 0.2f), 2.0f, value => globalLight.color = value);
             }
         }
+        else
+        {
+            Debug.LogWarning("Global Light 2D가 설정되지 않았습니다!");
+        }
+    }
 
 }

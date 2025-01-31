@@ -64,7 +64,7 @@ public abstract class Enemy : MonoBehaviour
 
         foreach (var level in levelsAccessedByPlayer)
         {
-            if (!levelsInReach.Contains(level) && CanAccessLevel(level))
+            if (!levelsInReach.Contains(level) && level != levelManager.levelWithMother && CanAccessLevel(level))
             {
                 levelsInReach.Add(level);
             }
@@ -78,7 +78,7 @@ public abstract class Enemy : MonoBehaviour
 
     private IEnumerator BehaviourRoutine()
     {
-        yield return new WaitUntil(() => levelManager.CurrentLevel != null && currentLevel != null);
+        yield return new WaitUntil(() => levelManager.CurrentLevel != null && levelManager.levelWithMother != null && currentLevel != null);
         levelsInReach.Add(currentLevel);
 
         while (true)
