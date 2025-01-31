@@ -13,6 +13,7 @@ public class PlayerController : MonoBehaviour
     private InputAction jumpInput;
     private InputAction actionInput1;
     private InputAction actionInput2;
+    private InputAction focusInput;
 
     //
 
@@ -26,6 +27,7 @@ public class PlayerController : MonoBehaviour
     private Hand hand;
     private Hide hide;
     private TEMP_Look look;
+    private FocusAudio focus;
 
     // =================================================================================================================
 
@@ -37,6 +39,7 @@ public class PlayerController : MonoBehaviour
         hand = GetComponent<Hand>();
         hide = GetComponent<Hide>();
         look = GetComponent<TEMP_Look>();
+        focus = GetComponent<FocusAudio>();
 
         controls = new();
 
@@ -45,6 +48,7 @@ public class PlayerController : MonoBehaviour
         jumpInput = controls.Player.Jump;
         actionInput1 = controls.Player.Action1;
         actionInput2 = controls.Player.Action2;
+        focusInput = controls.Player.Focus;
 
         peakUp = controls.Player.PeakUp;
         peakDown = controls.Player.PeakDown;
@@ -62,7 +66,7 @@ public class PlayerController : MonoBehaviour
         KillMovement();
     }
 
-    public void KillMovement()
+    public void KillMovement(bool andFocus = true)
     {
         jumpInput.performed -= jump.Act;
         actionInput1.performed -= claw.Act;
@@ -76,9 +80,14 @@ public class PlayerController : MonoBehaviour
 
         peakUp.performed -= look.ActUp;
         peakDown.performed -= look.ActDown;
+
+        if (!andFocus) return;
+
+        focusInput.performed -= focus.Focus;
+        focusInput.canceled -= focus.Unfocus;
     }
 
-    public void EnableMovement()
+    public void EnableMovement(bool andFocus = true)
     {
         jumpInput.performed += jump.Act;
         actionInput1.performed += claw.Act;
@@ -92,5 +101,10 @@ public class PlayerController : MonoBehaviour
 
         peakUp.performed += look.ActUp;
         peakDown.performed += look.ActDown;
+
+        if (!andFocus) return;
+
+        focusInput.performed += focus.Focus;
+        focusInput.canceled += focus.Unfocus;
     }
 }

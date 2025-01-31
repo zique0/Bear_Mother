@@ -13,6 +13,7 @@ public abstract class PlayerControl : MonoBehaviour
     protected static bool FacingRight;
     protected static bool Airborne;
     protected static bool OnBamboo;
+    protected static bool Focusing;
 
     // Graphics
     protected SpriteRenderer Sprite { get; private set; }
@@ -37,6 +38,10 @@ public abstract class PlayerControl : MonoBehaviour
         Controller = GetComponent<PlayerController>();
         LevelManager = FindObjectOfType<LevelManager>();
         World = LevelManager.CanBreak;
+
+        Airborne = false;
+        OnBamboo = false;
+        Focusing = false;
 
         Init();
     }

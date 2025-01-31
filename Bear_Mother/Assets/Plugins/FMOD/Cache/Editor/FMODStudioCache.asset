@@ -43,6 +43,7 @@ MonoBehaviour:
     Data3: 1530279850
     Data4: 2089415947
   Banks:
+  - {fileID: 4736928151424569967}
   - {fileID: 8254778533457692701}
   IsStream: 1
   Is3D: 0
@@ -52,6 +53,53 @@ MonoBehaviour:
   MinDistance: 1
   MaxDistance: 20
   Length: 130169
+--- !u!114 &-3626076130860779767
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/slime
+  m_EditorClassIdentifier: 
+  Path: event:/slime
+  Guid:
+    Data1: 1369549012
+    Data2: 1258898082
+    Data3: 1259841448
+    Data4: 85194533
+  Banks:
+  - {fileID: -3340266779923580084}
+  IsStream: 0
+  Is3D: 1
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 0
+--- !u!114 &-3340266779923580084
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c18180ecb35941f4682ae60107b85b7c, type: 3}
+  m_Name: bank:/SFX.bank
+  m_EditorClassIdentifier: 
+  Path: Audio/Bear_Mother/Build/Desktop/SFX.bank
+  Name: SFX
+  StudioPath: bank:/SFX
+  lastModified: 638739752203224527
+  FileSizes:
+  - Name: Desktop
+    Value: 47040
+  Exists: 1
 --- !u!114 &11400000
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -67,14 +115,18 @@ MonoBehaviour:
   EditorBanks:
   - {fileID: 774099517204641204}
   - {fileID: 8254778533457692701}
+  - {fileID: 4736928151424569967}
+  - {fileID: -3340266779923580084}
   EditorEvents:
   - {fileID: -4013010257393476614}
+  - {fileID: 4045238280677432402}
+  - {fileID: -3626076130860779767}
   EditorParameters: []
   MasterBanks:
   - {fileID: 8254778533457692701}
   StringsBanks:
   - {fileID: 774099517204641204}
-  cacheTime: 638738203536315094
+  cacheTime: 638739752203224527
   cacheVersion: 131622
 --- !u!114 &774099517204641204
 MonoBehaviour:
@@ -91,10 +143,57 @@ MonoBehaviour:
   Path: Audio/Bear_Mother/Build/Desktop/Master.strings.bank
   Name: Master.strings
   StudioPath: bank:/Master.strings
-  lastModified: 638738203536315094
+  lastModified: 638739752202994544
   FileSizes:
   - Name: Desktop
-    Value: 800
+    Value: 988
+  Exists: 1
+--- !u!114 &4045238280677432402
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/bird
+  m_EditorClassIdentifier: 
+  Path: event:/bird
+  Guid:
+    Data1: 62578468
+    Data2: 1116051340
+    Data3: 2102872498
+    Data4: -513807547
+  Banks:
+  - {fileID: -3340266779923580084}
+  IsStream: 0
+  Is3D: 1
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 0
+--- !u!114 &4736928151424569967
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c18180ecb35941f4682ae60107b85b7c, type: 3}
+  m_Name: bank:/Music.bank
+  m_EditorClassIdentifier: 
+  Path: Audio/Bear_Mother/Build/Desktop/Music.bank
+  Name: Music
+  StudioPath: bank:/Music
+  lastModified: 638739732825371284
+  FileSizes:
+  - Name: Desktop
+    Value: 1592800
   Exists: 1
 --- !u!114 &8254778533457692701
 MonoBehaviour:
@@ -111,7 +210,7 @@ MonoBehaviour:
   Path: Audio/Bear_Mother/Build/Desktop/Master.bank
   Name: Master
   StudioPath: bank:/Master
-  lastModified: 638738203536299818
+  lastModified: 638739752202973930
   FileSizes:
   - Name: Desktop
     Value: 1593312

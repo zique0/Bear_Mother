@@ -1,3 +1,4 @@
+using FMODUnity;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -26,6 +27,9 @@ public abstract class Enemy : MonoBehaviour
     protected Collider2D col;
     protected SpriteRenderer sprite;
     protected Animator animator;
+
+    [Space(10), SerializeField] public EventReference SFX;
+    public bool visible;
 
     private void Awake()
     {
@@ -103,6 +107,8 @@ public abstract class Enemy : MonoBehaviour
                     aggroRoutine = null;
                 }
 
+                visible = true;
+
                 yield return new WaitForSeconds(stunDuration);
                 stunned = false;
             }
@@ -130,6 +136,7 @@ public abstract class Enemy : MonoBehaviour
                             aggroRoutine = null;
                         }
 
+                        visible = true;
                         idleRoutine = StartCoroutine(Idle());
                     }
                 }
@@ -149,6 +156,7 @@ public abstract class Enemy : MonoBehaviour
                             idleRoutine = null;
                         }
 
+                        visible = true;
                         aggroRoutine = StartCoroutine(Aggro());
                     }
                 }
@@ -169,6 +177,7 @@ public abstract class Enemy : MonoBehaviour
                         aggroRoutine = null;
                     }
 
+                    visible = false;
                     culledRoutine = StartCoroutine(Culled());
                 }
             }

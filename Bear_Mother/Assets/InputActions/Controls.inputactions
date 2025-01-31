@@ -67,6 +67,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "Focus",
+                    "type": "Button",
+                    "id": "a5b2b09a-4bea-4a6c-8bb7-12da3a79d89a",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -138,6 +147,17 @@
                 },
                 {
                     "name": "",
+                    "id": "93d4c77f-bdf4-463c-8d45-9175d808abf2",
+                    "path": "<Gamepad>/leftStick/left",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Move Left",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
                     "id": "850ec9d9-7a66-4c25-8dd6-065f2e44487d",
                     "path": "<Keyboard>/leftArrow",
                     "interactions": "",
@@ -150,6 +170,17 @@
                 {
                     "name": "",
                     "id": "0e7b3231-fb23-4568-81c5-6e315c6b3dd1",
+                    "path": "<Gamepad>/leftStick/right",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Move Right",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "06fc5b16-a9ae-4fe2-a244-275c1a54d1c0",
                     "path": "<Keyboard>/rightArrow",
                     "interactions": "",
                     "processors": "",
@@ -161,6 +192,17 @@
                 {
                     "name": "",
                     "id": "53f67122-4eca-4ac1-b1a4-e785b62a90f6",
+                    "path": "<Gamepad>/leftStick/up",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Peak Up",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "6a81f634-17c0-4490-9449-100aa7d178d7",
                     "path": "<Keyboard>/upArrow",
                     "interactions": "",
                     "processors": "",
@@ -172,11 +214,44 @@
                 {
                     "name": "",
                     "id": "82db7109-1e27-4806-b8b0-df66c5632ca0",
+                    "path": "<Gamepad>/leftStick/down",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Peak Down",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "a569a3d6-0111-4035-bb4f-8552c8d668ea",
                     "path": "<Keyboard>/downArrow",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
                     "action": "Peak Down",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "c8c1a1d8-5efb-48c0-a5a6-c3caffe7f271",
+                    "path": "<Gamepad>/buttonEast",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Gamepad",
+                    "action": "Focus",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "3655951b-d9a1-4172-830a-dd831ed0fcc5",
+                    "path": "<Keyboard>/c",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard&Mouse",
+                    "action": "Focus",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

@@ -58,12 +58,6 @@ public class Jump : PlayerControl
     {
         yield return new WaitForFixedUpdate();
         Rb.velocity = Vector2.zero;
-
-        while (true)
-        {
-            Debug.Log(Rb.velocity);
-            yield return null;
-        }
     }
 
     private IEnumerator ActRoutine()
