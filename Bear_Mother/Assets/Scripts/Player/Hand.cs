@@ -10,8 +10,10 @@ public class Hand : PlayerControl
 
     [Header("Monitor")]
     [SerializeField] private Item held;
+    [SerializeField] private SpriteRenderer heldIcon;
+
     public bool Holding => held;
-    [SerializeField] private Item inChest;
+    [Space(10), SerializeField] private Item inChest;
 
     [Space(10), SerializeField] private GameObject nearItem;
     [SerializeField] private bool nearTotem;
@@ -86,6 +88,7 @@ public class Hand : PlayerControl
         if (!nearItem) return;
 
         held = nearItem.GetComponent<Item>();
+        heldIcon.sprite = held.GetComponent<SpriteRenderer>().sprite;
 
         nearItem.transform.SetParent(transform);
         nearItem.transform.localPosition = Vector3.up;
@@ -102,7 +105,9 @@ public class Hand : PlayerControl
         selfHunger.GainFullness();
 
         Destroy(held.gameObject);
+
         held = null;
+        heldIcon.sprite = null;
     }
 
     private void FeedTotem() // press near totem with held
@@ -113,7 +118,9 @@ public class Hand : PlayerControl
         totemHunger.GainFullness();
 
         Destroy(held.gameObject);
+
         held = null;
+        heldIcon.sprite = null;
     }
 
     private void PlaceInChest()
@@ -121,7 +128,9 @@ public class Hand : PlayerControl
         if (!nearChest || !held) return;
 
         inChest = held;
+
         held = null;
+        heldIcon.sprite = null;
 
         inChest.transform.SetParent(nearChest);
         inChest.gameObject.SetActive(false);
@@ -147,7 +156,11 @@ public class Hand : PlayerControl
         held.gameObject.SetActive(true);
         held.transform.SetParent(null);
 
-        if (!reserveReference) held = null;
+        if (!reserveReference)
+        {
+            held = null;
+            heldIcon.sprite = null;
+        }
     }
 
     public void Throw()
@@ -165,7 +178,9 @@ public class Hand : PlayerControl
         Drop(true);
 
         held.Launch(FacingRight);
+
         held = null;
+        heldIcon.sprite = null;
 
         yield return new WaitForSeconds(0.5f);
         if (heldRb) heldRb.excludeLayers = 0;

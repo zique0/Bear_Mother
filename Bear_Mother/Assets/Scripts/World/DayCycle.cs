@@ -36,7 +36,9 @@ public class DayCycle : MonoBehaviour
     private void Awake()
     {
         CurrentDay = Day.ONE;
-        CurrentState = State.DAY;
+        
+        CurrentState = State.NIGHT;
+        OnNight?.Invoke();
 
         sceneManager = FindObjectOfType<SceneManager>();
         UI = FindObjectOfType<DayCycleUI>();

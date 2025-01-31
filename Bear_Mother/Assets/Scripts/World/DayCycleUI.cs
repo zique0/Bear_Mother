@@ -9,7 +9,7 @@ public class DayCycleUI : MonoBehaviour
 
     private void Awake()
     {
-        text = GetComponent<TextMeshProUGUI>();
+        text = GetComponentInChildren<TextMeshProUGUI>();
     }
 
     public void UpdateUI(int dayCount)

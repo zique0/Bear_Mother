@@ -96,7 +96,7 @@ public class Claw : PlayerControl
         if (currentBreakTarget.Pos != null)
         {
             highlight.transform.position = LevelManager.CanBreak.CellToWorld(LevelManager.CanBreak.WorldToCell(GetBreakTargetPos()));
-            highlightImage.color = Color.red;
+            highlightImage.color = new Color(1, 0, 0, 0.7f);
         }
         else
         {
@@ -217,13 +217,14 @@ public class Claw : PlayerControl
 
             if (directionSetByInput)
             {
+                /*
                 if (currentBreakTarget.Pos == null)
                 {
                     directionSetByInput = false;
 
                     var newTarget =  breakTargets.FindLast(x => x.Pos != null);
                     if (newTarget != null) currentBreakTarget = newTarget;
-                }
+                } */
             }
 
             yield return new WaitForSeconds(0.1f);
