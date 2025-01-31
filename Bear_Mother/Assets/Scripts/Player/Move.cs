@@ -59,8 +59,6 @@ public class Move : PlayerControl
 
     public void Act(Vector2 dir)
     {
-        if (OnBamboo) return;
-
         Status.NotHidden();
         claw.TryUpdateBreakTargetDirection(Claw.BreakDir.FRONT);
 
@@ -77,6 +75,12 @@ public class Move : PlayerControl
 
     private IEnumerator ActRoutine(Vector2 dir)
     {
+        while (OnBamboo)
+        {
+            // Debug.Log("bamboo");
+            yield return null;
+        }
+
         if (stopRoutine != null) StopCoroutine(stopRoutine);
 
         Vector2 prevPos = Vector2.zero;
@@ -84,6 +88,13 @@ public class Move : PlayerControl
 
         while (!OnBamboo)
         {
+            /*
+            if (OnBamboo)
+            {
+                Rb.AddForce(-Rb.velocity, ForceMode2D.Impulse);
+                yield break;
+            } */
+
             Rb.AddForce(accelRate * Time.fixedDeltaTime * dir, ForceMode2D.Impulse);
             speed = Mathf.Abs(Rb.velocity.x);
 
@@ -116,6 +127,8 @@ public class Move : PlayerControl
 
     public void Stop(Vector2 dir)
     {
+        if (OnBamboo) return;
+
         if (stopRoutine != null) StopCoroutine(stopRoutine);
         stopRoutine = StartCoroutine(StopRoutine(dir));
     }

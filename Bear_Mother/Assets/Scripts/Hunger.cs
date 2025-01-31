@@ -33,7 +33,7 @@ public class Hunger : MonoBehaviour
             fullness++;
             hungerUI.UpdateHungerUI(); // 허기 회복 시 UI 업데이트
         }
-        
+
     }
 
     public void LoseFullness()
@@ -43,27 +43,27 @@ public class Hunger : MonoBehaviour
         if (fullness > 1)
         {
             fullness--;
-           
+
         }
         else
         {
             fullness = 0;
             onFullnessDepleted.Invoke();
-          
+
         }
-         hungerUI.UpdateHungerUI(); // 허기 감소 시 UI 업데이트
+        hungerUI.UpdateHungerUI(); // 허기 감소 시 UI 업데이트
     }
 
     private void OnEnable()
     {
         DayCycle.OnHalfDay += LoseFullness;
-         hungerUI.UpdateHungerUI();
+        hungerUI.UpdateHungerUI();
     }
 
     private void OnDisable()
     {
         DayCycle.OnHalfDay -= LoseFullness;
-         hungerUI.UpdateHungerUI();
+        hungerUI.UpdateHungerUI();
     }
 
     //허기값 반환환

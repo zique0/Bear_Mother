@@ -57,7 +57,9 @@ public class DayCycle : MonoBehaviour
     {
         StartCoroutine(UpdateRoutine());
     }
-    private void UpdateUI(){
+
+    private void UpdateUI()
+    {
         HungerUI.UpdateHungerUI();
     }
 
@@ -89,7 +91,7 @@ public class DayCycle : MonoBehaviour
                 }
                 sendSignalToLight2D();
                 UpdateUI();
-            } 
+            }
             else
             {
                 stateProgress = elapsed / nightDuration;

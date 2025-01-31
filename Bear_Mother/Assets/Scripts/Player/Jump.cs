@@ -38,7 +38,7 @@ public class Jump : PlayerControl
             OnBamboo = true;
             Rb.gravityScale = 0;
 
-            Rb.velocity = Vector2.zero;
+            StartCoroutine(FuckingMagic());
             Rb.transform.position = LevelManager.CanBreak.CellToWorld(LevelManager.CanBreak.WorldToCell(transform.position)) + new Vector3(0.5f, 0.5f); ;
 
             return;
@@ -50,6 +50,18 @@ public class Jump : PlayerControl
 
         if (actRoutine != null) StopCoroutine(actRoutine);
         actRoutine = StartCoroutine(ActRoutine());
+    }
+
+    private IEnumerator FuckingMagic()
+    {
+        yield return new WaitForFixedUpdate();
+        Rb.velocity = Vector2.zero;
+
+        while (true)
+        {
+            Debug.Log(Rb.velocity);
+            yield return null;
+        }
     }
 
     private IEnumerator ActRoutine()

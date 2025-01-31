@@ -246,7 +246,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   launchForce: 1000
-  launchAngle: 85
+  launchAngle: 60
   extraGravity: 0.02
   extraGravityAccel:
     serializedVersion: 2

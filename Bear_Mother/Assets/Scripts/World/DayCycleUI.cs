@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class DayCycleUI : MonoBehaviour
 {
-    public TextMeshProUGUI text;
+    private TextMeshProUGUI text;
 
     private void Awake()
     {
