@@ -35,14 +35,6 @@ public class Bamboo : Tool
 
         while (true)
         {
-            for  (int i = 0; i < bamboo.Count; i++)
-            {
-                var pos = bamboo[i];
-                var tile = i == bamboo.Count - 1 ? bambooTop : i == 0 ? bambooBottom : bambooMiddle;
-
-                levelManager.Bamboo.SetTile(new Vector3Int(pos.x, pos.y, 0), tile);
-            }
-
             TileBase aboveTile = levelManager.CanBreak.GetTile((Vector3Int)bamboo[^1] + Vector3Int.up);
             while (aboveTile)
             {
@@ -50,8 +42,17 @@ public class Bamboo : Tool
                 yield return null;
             }
 
-            bamboo.Add(bamboo[^1] + Vector2Int.up);
             yield return new WaitForSeconds(0.5f);
+
+            bamboo.Add(bamboo[^1] + Vector2Int.up);
+
+            for (int i = 0; i < bamboo.Count; i++)
+            {
+                var pos = bamboo[i];
+                var tile = i == bamboo.Count - 1 ? bambooTop : i == 0 ? bambooBottom : bambooMiddle;
+
+                levelManager.Bamboo.SetTile(new Vector3Int(pos.x, pos.y, 0), tile);
+            }
 
             yield return null;
         }
