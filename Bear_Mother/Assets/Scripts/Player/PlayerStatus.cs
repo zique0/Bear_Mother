@@ -16,17 +16,21 @@ public class PlayerStatus : MonoBehaviour
     private SpriteRenderer sprite;
     private HealthUI healthUI;
 
+    private Boss boss;
+
     private void Awake()
     {
         Health = maxHealth;
         sprite = GetComponent<SpriteRenderer>();
         healthUI = FindObjectOfType<HealthUI>();
+
+        boss = FindObjectOfType<Boss>();
     }
 
     public void TakeDamage(int deltaVal)
     {
         Health -= deltaVal;
-        if (Health <= 0) TEMP_Death();
+        if (Health < 0) TEMP_Death();
 
         healthUI.UpdateHealthUI(); // 체력 변경 시 UI 업데이트
     }
@@ -45,6 +49,8 @@ public class PlayerStatus : MonoBehaviour
     {
         Hidden = true;
         sprite.color = new Color(sprite.color.r, sprite.color.g, sprite.color.b, 0.7f);
+
+        boss.Clear();
     }
 
     public void NotHidden()

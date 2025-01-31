@@ -33,6 +33,8 @@ public class DayCycle : MonoBehaviour
     public delegate void NightEvent();
     public static event NightEvent OnNight;
 
+    private Boss boss;
+
     // Global Light 2D Reference
     [Header("Lighting Settings")]
     [SerializeField] private Light2D globalLight;
@@ -44,6 +46,10 @@ public class DayCycle : MonoBehaviour
 
     private void Awake()
     {
+        boss = GetComponent<Boss>();
+
+        //
+
         CurrentDay = Day.ONE;
 
         if (CurrentState == State.NIGHT) OnNight?.Invoke();
@@ -84,11 +90,14 @@ public class DayCycle : MonoBehaviour
                     CurrentState = State.NIGHT;
                     OnNight?.Invoke();
 
+                    boss.Trigger();
+
                     elapsed = 0;
 
                     OnHalfDay?.Invoke();
                     halfDayRaised = false;
                 }
+
                 sendSignalToLight2D();
                 UpdateUI();
             }
@@ -126,6 +135,7 @@ public class DayCycle : MonoBehaviour
                         yield break;
                     }
                 }
+
                 sendSignalToLight2D();
                 UpdateUI();
             }

@@ -165,7 +165,7 @@ public class Hand : PlayerControl
 
     public void Throw()
     {
-        if (!held) return;
+        if (!held || held is Food) return;
 
         StartCoroutine(ThrowRoutine());
     }

@@ -40,7 +40,7 @@ public class Hunger : MonoBehaviour
     {
         Debug.Log("Lost fullness");
 
-        if (fullness > 1)
+        if (fullness > 0)
         {
             fullness--;
 

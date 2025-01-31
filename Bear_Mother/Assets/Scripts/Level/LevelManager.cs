@@ -36,6 +36,8 @@ public class LevelManager : MonoBehaviour
     [SerializeField] private List<Level> levelsAccessedByPlayer = new();
     public Level levelWithMother;
 
+    private Boss boss;
+
     // =================================================================================================================
 
     public void LoadWorld()
@@ -123,6 +125,8 @@ public class LevelManager : MonoBehaviour
         CurrentLevel = bound.GetComponent<Level>();
         CurrentLevel.Shrink();
 
+        if (CurrentLevel == levelWithMother) boss.Clear();
+
         var confiner = _camera.GetComponent<CinemachineConfiner2D>();
         confiner.m_BoundingShape2D = bound;
 
@@ -152,6 +156,8 @@ public class LevelManager : MonoBehaviour
                 BlockData.Add(tile, set.Data);
             }
         }
+
+        boss = FindObjectOfType<Boss>();
     }
 
     private void Start()
