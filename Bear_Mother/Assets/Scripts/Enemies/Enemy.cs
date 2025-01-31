@@ -192,6 +192,8 @@ public abstract class Enemy : MonoBehaviour
         Debug.Log("Culled");
         sprite.color = Color.gray;
 
+        animator.SetTrigger("Idle");
+
         var elapsed = 0f;
         while (true)
         {
@@ -221,6 +223,8 @@ public abstract class Enemy : MonoBehaviour
     {
         Debug.Log("Idle");
         sprite.color = Color.white;
+
+        animator.SetTrigger("Idle");
 
         yield return null;
     }

@@ -19,6 +19,8 @@ public class GroundedEnemy : Enemy
 
         StartCoroutine(base.Aggro());
 
+        animator.SetTrigger("Aggro");
+
         while (true)
         {
             var dirToPlayer = (playerStatus.transform.position - transform.position).normalized;

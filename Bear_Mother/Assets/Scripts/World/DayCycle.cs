@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Rendering.Universal;
 using DG.Tweening;
+using FMODUnity;
 
 public class DayCycle : MonoBehaviour
 {
@@ -34,6 +35,7 @@ public class DayCycle : MonoBehaviour
     public static event NightEvent OnNight;
 
     private Boss boss;
+    private StudioEventEmitter music;
 
     // Global Light 2D Reference
     [Header("Lighting Settings")]
@@ -47,6 +49,7 @@ public class DayCycle : MonoBehaviour
     private void Awake()
     {
         boss = GetComponent<Boss>();
+        music = FindObjectOfType<StudioEventEmitter>();
 
         //
 
@@ -122,6 +125,8 @@ public class DayCycle : MonoBehaviour
 
                         CurrentDay++;
                         UI.UpdateUI((int)CurrentDay);
+
+                        music.SetParameter("Day", (int)CurrentDay);
 
                         OnHalfDay?.Invoke();
                         halfDayRaised = false;

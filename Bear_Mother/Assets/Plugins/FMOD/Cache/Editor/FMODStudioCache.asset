@@ -50,9 +50,10 @@ MonoBehaviour:
   IsOneShot: 0
   Parameters:
   - {fileID: -8679910370407594252}
+  - {fileID: -856285567566188581}
   MinDistance: 1
   MaxDistance: 20
-  Length: 130169
+  Length: 101140
 --- !u!114 &-3626076130860779767
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -95,10 +96,34 @@ MonoBehaviour:
   Path: Audio/Bear_Mother/Build/Desktop/SFX.bank
   Name: SFX
   StudioPath: bank:/SFX
-  lastModified: 638739752203224527
+  lastModified: 638739851640897499
   FileSizes:
   - Name: Desktop
-    Value: 47040
+    Value: 214496
+  Exists: 1
+--- !u!114 &-856285567566188581
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: parameter:/bear/Day
+  m_EditorClassIdentifier: 
+  Name: Day
+  StudioPath: 
+  Min: 1
+  Max: 4
+  Default: 1
+  ID:
+    data1: 2808780778
+    data2: 2870822877
+  Type: 0
+  IsGlobal: 0
+  Labels: []
   Exists: 1
 --- !u!114 &11400000
 MonoBehaviour:
@@ -126,7 +151,7 @@ MonoBehaviour:
   - {fileID: 8254778533457692701}
   StringsBanks:
   - {fileID: 774099517204641204}
-  cacheTime: 638739752203224527
+  cacheTime: 638739851640897499
   cacheVersion: 131622
 --- !u!114 &774099517204641204
 MonoBehaviour:
@@ -143,10 +168,10 @@ MonoBehaviour:
   Path: Audio/Bear_Mother/Build/Desktop/Master.strings.bank
   Name: Master.strings
   StudioPath: bank:/Master.strings
-  lastModified: 638739752202994544
+  lastModified: 638739823781013070
   FileSizes:
   - Name: Desktop
-    Value: 988
+    Value: 1034
   Exists: 1
 --- !u!114 &4045238280677432402
 MonoBehaviour:
@@ -168,13 +193,13 @@ MonoBehaviour:
     Data4: -513807547
   Banks:
   - {fileID: -3340266779923580084}
-  IsStream: 0
+  IsStream: 1
   Is3D: 1
   IsOneShot: 1
   Parameters: []
   MinDistance: 1
   MaxDistance: 20
-  Length: 0
+  Length: 20088
 --- !u!114 &4736928151424569967
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -190,10 +215,10 @@ MonoBehaviour:
   Path: Audio/Bear_Mother/Build/Desktop/Music.bank
   Name: Music
   StudioPath: bank:/Music
-  lastModified: 638739732825371284
+  lastModified: 638739823781441774
   FileSizes:
   - Name: Desktop
-    Value: 1592800
+    Value: 4001920
   Exists: 1
 --- !u!114 &8254778533457692701
 MonoBehaviour:
@@ -210,8 +235,8 @@ MonoBehaviour:
   Path: Audio/Bear_Mother/Build/Desktop/Master.bank
   Name: Master
   StudioPath: bank:/Master
-  lastModified: 638739752202973930
+  lastModified: 638739823780993056
   FileSizes:
   - Name: Desktop
-    Value: 1593312
+    Value: 4002432
   Exists: 1
