@@ -37,6 +37,9 @@ public class DayCycle : MonoBehaviour
     [Header("Lighting Settings")]
     [SerializeField] private Light2D globalLight; 
 
+    public HungerUI HungerUI;
+    //public HealthUI HealthUI;
+
     // ===============================================================================================================
 
     private void Awake()
@@ -51,6 +54,9 @@ public class DayCycle : MonoBehaviour
     private void Start()
     {
         StartCoroutine(UpdateRoutine());
+    }
+    private void UpdateUI(){
+        HungerUI.UpdateHungerUI();
     }
 
     private IEnumerator UpdateRoutine()
@@ -80,6 +86,7 @@ public class DayCycle : MonoBehaviour
                     halfDayRaised = false;
                 }
                 sendSignalToLight2D();
+                UpdateUI();
             } 
             else
             {
@@ -116,6 +123,7 @@ public class DayCycle : MonoBehaviour
                     }
                 }
                 sendSignalToLight2D();
+                UpdateUI();
             }
             
             elapsed++;
