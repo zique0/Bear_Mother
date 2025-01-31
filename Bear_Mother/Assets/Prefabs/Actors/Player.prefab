@@ -455,8 +455,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   totemHunger: {fileID: 0}
   held: {fileID: 0}
+  heldIcon: {fileID: 0}
+  inChest: {fileID: 0}
   nearItem: {fileID: 0}
   nearTotem: 0
+  nearChest: {fileID: 0}
   holdInputThreshold: 0.5
 --- !u!114 &6534845384389646026
 MonoBehaviour:
@@ -471,6 +474,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   attackCooldownTimer: 0.5
+  damage: 0
+  attackRadius: 0
   breakRange: 1
   holdInputThreshold: 0.5
   breakDuration: 0

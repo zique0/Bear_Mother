@@ -92,7 +92,8 @@ public class LevelManager : MonoBehaviour
                     level.BreakableTiles.SetTile(point, null);
                     var worldPos = level.BreakableTiles.CellToWorld(point);
 
-                    if (preExistingLevels.Contains(level)) canBreak.SetTile(canBreak.WorldToCell(worldPos) + Vector3Int.up, tile);
+                    // if (preExistingLevels.Contains(level)) canBreak.SetTile(canBreak.WorldToCell(worldPos) + Vector3Int.up, tile);
+                    if (preExistingLevels.Contains(level)) canBreak.SetTile(canBreak.WorldToCell(worldPos), tile);
                     else canBreak.SetTile(canBreak.WorldToCell(worldPos), tile);
                 }
             }
