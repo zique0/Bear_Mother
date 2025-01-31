@@ -39,9 +39,21 @@ public class LevelManager : MonoBehaviour
     public void LoadWorld()
     {
         var placeholders = FindObjectsOfType<LevelPlaceholder>().ToList();
+        var preExistingLevels = FindObjectsOfType<Level>().ToList();
         var dontFillWithDirt = new List<Vector3Int>();
 
         var levelCount = 0;
+
+        foreach (var level in preExistingLevels)
+        {
+            levelCount++;
+            levels.Add(level);
+
+            foreach (var point in level.Bound.cellBounds.allPositionsWithin)
+            {
+                dontFillWithDirt.Add(canBreak.WorldToCell(level.Bound.GetCellCenterWorld(point)));
+            }
+        }
 
         foreach (var placeholder in placeholders)
         {
@@ -77,7 +89,9 @@ public class LevelManager : MonoBehaviour
                 {
                     level.BreakableTiles.SetTile(point, null);
                     var worldPos = level.BreakableTiles.CellToWorld(point);
-                    canBreak.SetTile(canBreak.WorldToCell(worldPos), tile);
+
+                    if (preExistingLevels.Contains(level)) canBreak.SetTile(canBreak.WorldToCell(worldPos) + Vector3Int.up, tile);
+                    else canBreak.SetTile(canBreak.WorldToCell(worldPos), tile);
                 }
             }
         }
