@@ -29,6 +29,8 @@ public class Jump : PlayerControl
             OnBamboo = false;
             Rb.gravityScale = 1;
 
+            Airborne = true;
+
             return;
         }
         else if (nearBamboo)
@@ -39,7 +41,7 @@ public class Jump : PlayerControl
             Rb.gravityScale = 0;
 
             StartCoroutine(FuckingMagic());
-            Rb.transform.position = LevelManager.CanBreak.CellToWorld(LevelManager.CanBreak.WorldToCell(transform.position)) + new Vector3(0.5f, 0.5f); ;
+            Rb.transform.position = LevelManager.CanBreak.CellToWorld(LevelManager.CanBreak.WorldToCell(transform.position)) + new Vector3(0.5f, 0.5f);
 
             return;
         }
@@ -72,7 +74,7 @@ public class Jump : PlayerControl
         var elapsed = 0f;
         var elapsedRatio = 0f;
 
-        while (Airborne)
+        while (!OnBamboo && Airborne)
         {
             var gravity = extraGravity + (extraGravity * extraGravityAccel.Evaluate(elapsedRatio));
             Rb.AddForce(new Vector2(0, -gravity), ForceMode2D.Impulse);
